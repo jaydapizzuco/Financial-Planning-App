@@ -4,6 +4,7 @@ import 'package:financial_planner/login/loginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_planner/homeScreen.dart';
 
+import '../models/Balance.dart';
 import '../models/UserModel.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -129,5 +130,20 @@ void _addUserToDb(UserModel userModel){
   ).toJson();
 
   userCollection.doc(id).set(newUser);
+
+  final balanceCollection = FirebaseFirestore.instance.collection("Balances");
+
+  String balanceId = balanceCollection.doc().id;
+
+  final newBalance = Balance(
+    id: balanceId,
+    userId: id,
+    amount: 0,
+  ).toJson();
+
+  balanceCollection.doc(balanceId).set(newBalance);
+}
+
+void _createOriginalBalance(String userId){
 
 }
