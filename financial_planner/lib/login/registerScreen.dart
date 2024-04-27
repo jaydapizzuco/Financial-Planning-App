@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial_planner/FirebaseAuthService.dart';
 import 'package:financial_planner/login/loginScreen.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +88,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(
                     width: 350,
                     child : ElevatedButton(onPressed: (){
+                        _addUserToDb(new UserModel(
+                          username: _usernameController.text,
+                          email : _emailController.text,
+                        ));
                         _register();
                     }, child: Text("Register", style: TextStyle(fontSize: 20),),
                     )
@@ -107,5 +112,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
             )
         )
     );
+  }
+}
+
+void _addUserToDb(UserModel userModel){
+  final userCollection = FirebaseFirestore.instance.collection("Users");
+
+  String id = userCollection.doc().id;
+
+  final newUser = UserModel(
+    username: userModel.username,
+    email: userModel.email,
+    id: id,
+  ).toJson();
+
+  userCollection.doc(id).set(newUser);
+
+}
+class UserModel{
+  final String? id;
+  final String? username;
+  final String? email;
+
+  UserModel({this.id,this.username,this.email});
+
+  static UserModel fromSnapshot(DocumentSnapshot<Map<String,dynamic>> snapshot){
+    return UserModel(
+      username: snapshot['username'],
+      email: snapshot['email'],
+      id: snapshot ['id']
+    );
+  }
+
+  Map<String,dynamic> toJson(){
+    return {
+      "username" : username,
+      "email" : email,
+      "id" : id,
+    };
   }
 }
