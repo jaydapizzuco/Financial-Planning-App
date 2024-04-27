@@ -10,6 +10,8 @@ class SpendingScreen extends StatefulWidget {
 class _SpendingScreenState extends State<SpendingScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Container(
+      child: Text('Spendings Screen'),
+    );
   }
 }

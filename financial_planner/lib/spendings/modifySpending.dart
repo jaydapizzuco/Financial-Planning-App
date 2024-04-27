@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
-class SpendingScreen extends StatefulWidget {
-  const SpendingScreen({super.key});
+class ModifySpending extends StatefulWidget {
+  const ModifySpending({super.key});
 
   @override
-  State<SpendingScreen> createState() => _SpendingScreenState();
+  State<ModifySpending> createState() => _ModifySpendingState();
 }
 
-class _SpendingScreenState extends State<SpendingScreen> {
+class _ModifySpendingState extends State<ModifySpending> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Placeholder();
   }
 }
+

@@ -1,4 +1,5 @@
 import 'package:financial_planner/homeScreen.dart';
+import 'package:financial_planner/navigatingScreens.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_planner/homeScreen.dart';
 import 'registerScreen.dart';
@@ -24,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var user = await _auth.login(email, password);
     if(user != null){
       print("User has been successfully signed in");
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> NavigatingScreen()));
     }else{
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("You email or password is invalid. Please try again.")));
     }
