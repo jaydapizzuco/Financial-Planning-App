@@ -1,5 +1,7 @@
+import 'package:financial_planner/FirebaseAuthService.dart';
 import 'package:financial_planner/login/loginScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:financial_planner/homeScreen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -9,9 +11,25 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final FirebaseAuthService _auth = FirebaseAuthService();
+
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+
+  void _register() async {
+  String username = _usernameController.text;
+  String email = _emailController.text;
+  String password = _passwordController.text;
+
+  var user = await _auth.register(email, password);
+  if(user != null){
+    print("User has been successfully created");
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }else{
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Your password must be at least 6 characters.")));
+  }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   child :TextFormField(
                     controller: _usernameController,
-                    obscureText: true,
+                    obscureText: false,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(labelText : 'Username'),
                   ),
@@ -69,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(
                     width: 350,
                     child : ElevatedButton(onPressed: (){
-
+                        _register();
                     }, child: Text("Register", style: TextStyle(fontSize: 20),),
                     )
                 ),SizedBox(height: 10,),

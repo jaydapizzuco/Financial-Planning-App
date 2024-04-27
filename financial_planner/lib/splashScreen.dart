@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
         body: Center(
           child: Text(
-            'Are you ready to plan your finances?',
+            'Are you ready to start saving?',
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ));
