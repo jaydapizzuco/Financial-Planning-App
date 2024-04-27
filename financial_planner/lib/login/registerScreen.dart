@@ -143,7 +143,3 @@ void _addUserToDb(UserModel userModel){
 
   balanceCollection.doc(balanceId).set(newBalance);
 }
-
-void _createOriginalBalance(String userId){
-
-}

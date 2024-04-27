@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../models/Balance.dart';
+import 'addIncome1.dart';
 
 
 class BalanceScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              height: 200,
+              height: 150,
                 width: 350,
                 decoration: BoxDecoration(
                   color: Colors.blue[100],
@@ -56,7 +57,48 @@ class _BalanceScreenState extends State<BalanceScreen> {
                     Text("\$\ ${balanceAmount}", style: TextStyle(fontSize: 50, color: Colors.blueGrey, fontWeight: FontWeight.bold),)
                   ],
                 )
+                ),
+            SizedBox(height: 10,),
+            Container(
+                height: 80,
+                width: 350,
+                decoration: BoxDecoration(
+                    color: Colors.blue[100],
+                    borderRadius: BorderRadius.all(Radius.circular(20))
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Gained this month: x", style: TextStyle(fontSize: 24, color: Colors.blueGrey, fontWeight: FontWeight.bold),),
+                     ],
                 )
+            ),
+            SizedBox(height: 10,),
+            Container(
+                height: 80,
+                width: 350,
+                decoration: BoxDecoration(
+                    color: Colors.blue[100],
+                    borderRadius: BorderRadius.all(Radius.circular(20))
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Monthly average: x", style: TextStyle(fontSize: 24, color: Colors.blueGrey, fontWeight: FontWeight.bold),),
+                  ],
+                )
+            ),
+            SizedBox(height:10 ,),
+            SizedBox(
+                height: 50,
+                width: 300,
+                child : ElevatedButton(onPressed: (){
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> AddIncome1(userId: widget.userId, balanceAmount: balanceAmount,)), (route)=> false);
+                }, child: Text("Add Income", style: TextStyle(fontSize: 20),),
+                )
+            ),
           ],
         ),
       )
