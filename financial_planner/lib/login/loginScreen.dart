@@ -1,4 +1,7 @@
+import 'package:financial_planner/homeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:financial_planner/homeScreen.dart';
+import 'registerScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -8,8 +11,71 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Login"),
+        ),
+        body: Center(
+          child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text("Financial App", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),),
+            SizedBox(height: 20,),
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(.35),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child :TextFormField(
+                controller: _emailController,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(labelText : 'Email'),
+              ),
+            ),
+            SizedBox(height: 20,),
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(.35),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child :TextFormField(
+                controller: _passwordController,
+                obscureText: true,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(labelText : 'Password'),
+              ),
+            ),
+            SizedBox(height: 20,),
+            SizedBox(
+              width: 350,
+             child : ElevatedButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
+              }, child: Text("Login", style: TextStyle(fontSize: 20),),
+            )
+            ),
+            SizedBox(height: 10,),
+            Row(
+              children: [
+                Text("Don't have an account?"),
+                SizedBox(width: 5,),
+                GestureDetector(
+                  onTap:(){
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> RegisterScreen()), (route) => false);
+                  },
+                  child: Text('Register Now', style: TextStyle(color: Colors.deepPurpleAccent, fontWeight: FontWeight.bold),),
+                )
+              ],
+            )
+          ],
+        )
+        )
+    );
   }
 }
