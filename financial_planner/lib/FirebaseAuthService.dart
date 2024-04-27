@@ -25,4 +25,13 @@ class FirebaseAuthService {
     }
     return null;
   }
+  //requires a working email address
+  Future<void> sendPasswordResetEmail(String email) async{
+    try{
+      await _auth.sendPasswordResetEmail(email: email);
+    }
+    catch(e){
+      print("An error occured : ${e}");
+    }
+  }
 }

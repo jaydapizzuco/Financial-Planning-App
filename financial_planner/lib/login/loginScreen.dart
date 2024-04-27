@@ -2,6 +2,7 @@ import 'package:financial_planner/homeScreen.dart';
 import 'package:financial_planner/navigatingScreens.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_planner/homeScreen.dart';
+import 'forgetPSW1.dart';
 import 'registerScreen.dart';
 import 'package:financial_planner/FirebaseAuthService.dart';
 
@@ -90,6 +91,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text('Register Now', style: TextStyle(color: Colors.deepPurpleAccent, fontWeight: FontWeight.bold),),
                 )
               ],
+            ),
+            SizedBox(height: 10,),
+            GestureDetector(
+              onTap:(){
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> ForgetPSW1()), (route) => false);
+              },
+              child: Text('Forgot Password?', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),),
             )
           ],
         )

@@ -24,7 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   var user = await _auth.register(email, password);
   if(user != null){
-    print("User has been successfully created");
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("User has been successfully created")));
     Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }else{
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Your password must be at least 6 characters.")));
