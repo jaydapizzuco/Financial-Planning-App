@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class BudgetScreen extends StatefulWidget {
-  const BudgetScreen({super.key});
+  final String? userId;
+
+  BudgetScreen({this.userId});
+
 
   @override
   State<BudgetScreen> createState() => _BudgetScreenState();
@@ -10,8 +13,8 @@ class BudgetScreen extends StatefulWidget {
 class _BudgetScreenState extends State<BudgetScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('Budget Screen'),
+    return Center(
+      child: Text("Budget ${widget.userId}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
     );
   }
 }

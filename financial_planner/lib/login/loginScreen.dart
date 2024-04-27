@@ -1,10 +1,14 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial_planner/homeScreen.dart';
 import 'package:financial_planner/navigatingScreens.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_planner/homeScreen.dart';
+import '../models/UserModel.dart';
 import 'forgetPSW1.dart';
 import 'registerScreen.dart';
-import 'package:financial_planner/FirebaseAuthService.dart';
+import 'package:financial_planner/models/FirebaseAuthService.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -26,7 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
     var user = await _auth.login(email, password);
     if(user != null){
       print("User has been successfully signed in");
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> NavigatingScreen()));
+      String? userId = await getIdByEmail(_emailController.text);
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> NavigatingScreen(userId: userId)));
     }else{
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("You email or password is invalid. Please try again.")));
     }
@@ -104,4 +109,24 @@ class _LoginScreenState extends State<LoginScreen> {
         )
     );
   }
+}
+
+Future<String?> getIdByEmail(String email) async {
+  String? userId;
+
+  try {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .where('email', isEqualTo: email)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      var userModel = UserModel.fromSnapshot(querySnapshot.docs.first);
+      userId = userModel.id;
+    }
+  } catch (error) {
+    print('Error getting ID: $error');
+  }
+
+  return userId;
 }

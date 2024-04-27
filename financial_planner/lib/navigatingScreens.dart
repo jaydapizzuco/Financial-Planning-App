@@ -5,15 +5,19 @@ import 'package:financial_planner/homeScreen.dart';
 import 'package:financial_planner/spendings/spendingsScreen.dart';
 import 'package:flutter/material.dart';
 
+import 'login/loginScreen.dart';
+
 
 class NavigatingScreen extends StatefulWidget {
-  const NavigatingScreen({super.key});
+  final String? userId;
+  NavigatingScreen({super.key, required this.userId});
 
   @override
   State<NavigatingScreen> createState() => _NavigatingScreenState();
 }
 
 class _NavigatingScreenState extends State<NavigatingScreen> {
+
 
   int currentPage = 0;
 
@@ -62,15 +66,15 @@ class _NavigatingScreenState extends State<NavigatingScreen> {
         body: <Widget>[
 
           //add all the screens
-          HomeScreen(),
+          HomeScreen(userId: widget.userId),
 
-          BalanceScreen(),
+          BalanceScreen(userId: widget.userId),
 
-          SpendingScreen(),
+          SpendingScreen(userId: widget.userId),
 
-          BudgetScreen(),
+          BudgetScreen(userId: widget.userId),
 
-          GoalScreen(),
+          GoalScreen(userId: widget.userId),
 
 
         ][currentPage],

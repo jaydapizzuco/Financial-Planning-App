@@ -2,6 +2,7 @@ import 'package:financial_planner/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'navigatingScreens.dart';
 import 'splashScreen.dart';
 import 'login/loginScreen.dart';
 

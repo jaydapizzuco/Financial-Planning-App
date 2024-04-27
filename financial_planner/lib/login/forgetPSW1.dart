@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../FirebaseAuthService.dart';
+import '../models/FirebaseAuthService.dart';
 import 'forgetPSW2.dart';
 
 class ForgetPSW1 extends StatefulWidget {

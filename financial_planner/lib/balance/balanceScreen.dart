@@ -4,7 +4,9 @@ import 'package:flutter/widgets.dart';
 
 
 class BalanceScreen extends StatefulWidget {
-  const BalanceScreen({super.key});
+  final String? userId;
+
+  BalanceScreen({this.userId});
 
   @override
   State<BalanceScreen> createState() => _BalanceScreenState();
@@ -13,8 +15,8 @@ class BalanceScreen extends StatefulWidget {
 class _BalanceScreenState extends State<BalanceScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('Balance Screen'),
+    return Center(
+      child:  Text(" Balance Screen ${widget.userId}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
     );
   }
 }

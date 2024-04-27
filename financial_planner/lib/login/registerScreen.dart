@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial_planner/FirebaseAuthService.dart';
+import 'package:financial_planner/models/FirebaseAuthService.dart';
 import 'package:financial_planner/login/loginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_planner/homeScreen.dart';
+
+import '../models/UserModel.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -128,27 +130,4 @@ void _addUserToDb(UserModel userModel){
 
   userCollection.doc(id).set(newUser);
 
-}
-class UserModel{
-  final String? id;
-  final String? username;
-  final String? email;
-
-  UserModel({this.id,this.username,this.email});
-
-  static UserModel fromSnapshot(DocumentSnapshot<Map<String,dynamic>> snapshot){
-    return UserModel(
-      username: snapshot['username'],
-      email: snapshot['email'],
-      id: snapshot ['id']
-    );
-  }
-
-  Map<String,dynamic> toJson(){
-    return {
-      "username" : username,
-      "email" : email,
-      "id" : id,
-    };
-  }
 }

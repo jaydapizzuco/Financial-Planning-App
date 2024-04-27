@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'login/loginScreen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+final String? userId;
+
+HomeScreen({this.userId});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -18,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
           Text("HomePage", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+          Text("${widget.userId}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
           SizedBox(
               width: 200,
             child : ElevatedButton(onPressed: (){
