@@ -132,13 +132,13 @@ class _SpendingScreenState extends State<SpendingScreen> {
                   child: ElevatedButton(onPressed: () {
                     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                         builder: (context) =>
-                            AddSpending(/*userId: widget.userId,
-                              balanceAmount: balanceAmount,*/)), (
+                            AddSpending(userId: widget.userId,
+                              balanceAmount: balanceAmount,)), (
                         route) => false);
-                  }, child: Text("Add Income", style: TextStyle(fontSize: 20),),
+                  }, child: Text("Add Spending", style: TextStyle(fontSize: 20),),
                   )
               ),
-              Text("Incomes", style: TextStyle(fontSize: 24),),
+              Text("Spendings", style: TextStyle(fontSize: 24),),
               StreamBuilder<QuerySnapshot>(
                   stream: _spendingsStream,
                   builder: (BuildContext context,
