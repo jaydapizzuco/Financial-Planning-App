@@ -67,7 +67,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
               children: [
                 Container(
 
-                    height: 120,
+                    height: 100,
                     width: 350,
                     decoration: BoxDecoration(
                         color: Colors.blue[100],
@@ -89,7 +89,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                 ),
                 SizedBox(height: 10,),
                 Container(
-                    height: 80,
+                    height: 50,
                     width: 350,
                     decoration: BoxDecoration(
                         color: Colors.blue[100],
@@ -108,7 +108,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                 ),
                 SizedBox(height: 10,),
                 Container(
-                    height: 80,
+                    height: 50,
                     width: 350,
                     decoration: BoxDecoration(
                         color: Colors.blue[100],
@@ -165,7 +165,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                           child: Container(height: 80,
                                             width: 350,
                                             decoration: BoxDecoration(
-                                                color: Colors.blue[100],
+                                                color: Colors.pinkAccent[100],
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(20))
                                             ),
