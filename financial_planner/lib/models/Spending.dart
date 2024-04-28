@@ -6,8 +6,9 @@ class Spending{
   final double? amount;
   final String? title;
   final String? description;
+  final String? budgetId;
 
-  Spending({this.id,this.balanceId,this.amount, this.title, this.description});
+  Spending({this.id,this.balanceId,this.amount, this.title, this.description, this.budgetId});
 
   static Spending fromSnapshot(QueryDocumentSnapshot<Object?> snapshot){
     return Spending(
@@ -25,7 +26,8 @@ class Spending{
       "balanceId" : balanceId,
       "amount" : amount,
       "title" : title,
-      "description":  description
+      "description":  description,
+      "budgetId" : budgetId,
     };
   }
 }

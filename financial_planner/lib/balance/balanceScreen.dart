@@ -165,7 +165,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                           child: Container(height: 80,
                                             width: 350,
                                             decoration: BoxDecoration(
-                                                color: Colors.pinkAccent[100],
+                                                color: Colors.lightGreenAccent[100],
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(20))
                                             ),
