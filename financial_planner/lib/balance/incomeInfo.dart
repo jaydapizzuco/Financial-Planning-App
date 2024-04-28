@@ -1,3 +1,4 @@
+import 'package:financial_planner/balance/incomeModify.dart';
 import 'package:flutter/material.dart';
 import '../models/Income.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,6 +86,7 @@ class _IncomeInfoState extends State<IncomeInfo> {
                 height: 50,
                 width: 300,
                 child: ElevatedButton(onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ModifyIncome(income: income)));
 
                 }, child: Text("Modify", style: TextStyle(fontSize: 20),),
                 )
@@ -94,16 +96,8 @@ class _IncomeInfoState extends State<IncomeInfo> {
                 height: 50,
                 width: 300,
                 child: ElevatedButton(onPressed: () {
-                }, child: Text("Delete", style: TextStyle(fontSize: 20),),
-                )
-            ),
-            SizedBox(height: 20,),
-            SizedBox(
-                height: 50,
-                width: 300,
-                child: ElevatedButton(onPressed: () {
                   Navigator.pop(context);
-                }, child: Text("Cancel", style: TextStyle(fontSize: 20),),
+                }, child: Text("Back to Balance", style: TextStyle(fontSize: 20),),
                 )
             ),
           ],
