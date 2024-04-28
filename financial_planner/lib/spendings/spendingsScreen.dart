@@ -162,8 +162,7 @@ class _SpendingScreenState extends State<SpendingScreen> {
                                   child: Column(
 
                                     children: [
-                                      GestureDetector(
-                                        child: Container(height: 80,
+                                      Container(height: 80,
                                           width: 350,
                                           decoration: BoxDecoration(
                                               color: Colors.pinkAccent[100],
@@ -176,16 +175,6 @@ class _SpendingScreenState extends State<SpendingScreen> {
                                               subtitle: Text(data['description'])
                                           ),
                                         ),
-
-                                        onTap: (){
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => IncomeInfo(id: data['id'])));
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                              content: Text('A SnackBar has been shown.'),
-                                            ),
-                                          );
-                                        },
-                                      ),
 
                                       SizedBox(height: 20,)
                                     ],
