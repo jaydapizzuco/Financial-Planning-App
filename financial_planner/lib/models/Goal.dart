@@ -7,15 +7,12 @@ class Goal{
   final double? amountCompleted;
   final String? name;
   final String? description;
-  final int? startYear;
-  final int? startMonth;
-  final int? startDay;
+  final int? startDate;
+  final int? endDate;
+  final String? status;
+  final int? daysReached;
 
-  final int? endYear;
-  final int? endMonth;
-  final int? endDay;
-
-  Goal({this.id,this.userId,this.goalAmount,this.amountCompleted,this.name,this.description,this.startYear, this.startMonth, this.startDay, this.endYear, this.endMonth, this.endDay});
+  Goal({this.id,this.userId,this.goalAmount,this.amountCompleted,this.name,this.description,this.startDate, this.endDate, this.status, this.daysReached});
 
   static Goal fromSnapshot(QueryDocumentSnapshot<Object?> snapshot){
     return Goal(
@@ -25,12 +22,10 @@ class Goal{
       amountCompleted: snapshot['amountCompleted'],
       name: snapshot?['name'],
       description: snapshot['description'],
-      startYear: snapshot['startYear'],
-      startMonth: snapshot['startMonth'],
-      startDay: snapshot['startDay'],
-      endYear: snapshot['endYear'],
-      endMonth: snapshot['endMonth'],
-      endDay: snapshot['endDay'],
+      startDate: snapshot['startDate'],
+      endDate: snapshot['endDate'],
+      status: snapshot['status'],
+      daysReached: snapshot['daysReached']
     );
   }
 
@@ -42,12 +37,10 @@ class Goal{
       "amountCompleted" : amountCompleted,
       "name" : name,
       "description" : description,
-      "startYear" : startYear,
-      "startMonth" : startMonth,
-      "startDay" : startDay,
-      "endYear" : endYear,
-      "endMonth" : endMonth,
-      "endDay" : endDay,
+      "startDate" : startDate,
+      "endDate" : endDate,
+      "status" : status,
+      "daysReached" : daysReached
     };
   }
 }
