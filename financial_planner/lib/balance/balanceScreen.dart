@@ -136,25 +136,6 @@ class _BalanceScreenState extends State<BalanceScreen> {
             SizedBox(
               height: 10,
             ),
-            SizedBox(
-                height: 50,
-                width: 300,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddIncome1(
-                                  userId: widget.userId,
-                                  balanceAmount: balanceAmount,
-                                )),
-                        (route) => false);
-                  },
-                  child: Text(
-                    "Add Income",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                )),
             Text(
               "Incomes",
               style: TextStyle(fontSize: 24),

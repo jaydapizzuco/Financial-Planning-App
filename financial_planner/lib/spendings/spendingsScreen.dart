@@ -136,25 +136,6 @@ class _SpendingScreenState extends State<SpendingScreen> {
             SizedBox(
               height: 10,
             ),
-            SizedBox(
-                height: 50,
-                width: 300,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddSpending(
-                                  userId: widget.userId,
-                                  balanceAmount: balanceAmount,
-                                )),
-                        (route) => false);
-                  },
-                  child: Text(
-                    "Add Spending",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                )),
             Text(
               "Spendings",
               style: TextStyle(fontSize: 24),

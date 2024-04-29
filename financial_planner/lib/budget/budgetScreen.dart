@@ -102,24 +102,6 @@ class _BudgetScreenState extends State<BudgetScreen> {
                       }).toList(),
                     ));
                   }),
-              SizedBox(
-                  height: 50,
-                  width: 300,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddBudget(
-                                    userId: widget.userId,
-                                  )),
-                          (route) => false);
-                    },
-                    child: Text(
-                      "Create New Budget",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  )),
             ]
             )
         ),
