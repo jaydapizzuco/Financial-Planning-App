@@ -29,14 +29,6 @@ class _AddIncome1State extends State<AddIncome1> {
   @override
   void initState() {
     super.initState();
-    //setBalance();
-  }
-
-  void setBalance() async {
-    String? id = await getBalanceIdById(widget.userId);
-    setState(() {
-      balanceId = id;
-    });
   }
 
   @override
@@ -136,27 +128,6 @@ class _AddIncome1State extends State<AddIncome1> {
       ),
     );
   }
-
-  Future<String?> getBalanceIdById(String? id) async {
-    String? balanceId;
-
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('Balances')
-          .where('userId', isEqualTo: widget.userId)
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        Balance balance = Balance.fromSnapshot(querySnapshot.docs.first);
-        balanceId = balance.id;
-      }
-    } catch (error) {
-      print('Error getting ID: $error');
-    }
-
-    return balanceId;
-  }
-
 
   void _addIncome(Income income) {
     final incomeCollection = FirebaseFirestore.instance.collection("Incomes");
