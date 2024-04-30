@@ -9,8 +9,9 @@ import '../models/Income.dart';
 
 class AddIncome1 extends StatefulWidget {
   final String? userId;
+  final String? balanceId;
   final num? balanceAmount;
-  AddIncome1({this.userId,this.balanceAmount});
+  AddIncome1({this.userId,this.balanceAmount,this.balanceId});
 
   @override
   State<AddIncome1> createState() => _AddIncome1State();
@@ -28,7 +29,7 @@ class _AddIncome1State extends State<AddIncome1> {
   @override
   void initState() {
     super.initState();
-    setBalance();
+    //setBalance();
   }
 
   void setBalance() async {
@@ -49,6 +50,7 @@ class _AddIncome1State extends State<AddIncome1> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Text('${widget.balanceAmount}'),
             Container(
               width: 350,
               decoration: BoxDecoration(
@@ -100,13 +102,13 @@ class _AddIncome1State extends State<AddIncome1> {
                 width: 300,
                 child: ElevatedButton(onPressed: () {
                   _addIncome(new Income(
-                    balanceId: balanceId,
+                    balanceId: widget.balanceId,
                     title: _titleController.text,
                     amount: double.parse(_amountController.text),
                     description: _descriptionController.text,
                   ));
                   _updateBalance(Balance(
-                    id: balanceId,
+                    id: widget.balanceId,
                     userId: widget.userId,
                     amount: widget.balanceAmount! + double.parse(_amountController.text),
                   ));
