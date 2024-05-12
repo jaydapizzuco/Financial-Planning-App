@@ -138,7 +138,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  "\$\ ${data['amount']}",
+                                  "\$\ ${data['amount'].toStringAsFixed(2)}",
                                   style: TextStyle(
                                       fontSize: 45,
                                       color: Colors.blueGrey,
@@ -164,11 +164,8 @@ class _BalanceScreenState extends State<BalanceScreen> {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     }
-
-                    // Calculate the total amount of incomes
                     double totalAmount = 0;
                     snapshot.data!.docs.forEach((document) {
-                      // Access the 'amount' field from the document data
                       double amount = document['amount'];
                       totalAmount += amount;
                     });

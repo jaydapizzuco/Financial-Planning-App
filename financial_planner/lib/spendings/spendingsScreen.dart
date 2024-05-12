@@ -20,6 +20,7 @@ class _SpendingScreenState extends State<SpendingScreen> {
   num? balanceAmount;
   String? balanceId;
   Stream<QuerySnapshot>? _spendingsStream;
+  Stream<QuerySnapshot>? _thisMonthsSpendingsStream;
 
   @override
   void initState() {
@@ -33,6 +34,14 @@ class _SpendingScreenState extends State<SpendingScreen> {
     setState(() {
       balanceId = id;
       getIncomes();
+      setThisMonthsIncomeStream();
+    });
+  }
+
+  void setThisMonthsIncomeStream() async {
+    Stream<QuerySnapshot>? spendings = await _getSpendingsThisMonth(balanceId);
+    setState(() {
+      _thisMonthsSpendingsStream = spendings;
     });
   }
 
@@ -81,7 +90,7 @@ class _SpendingScreenState extends State<SpendingScreen> {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "\$\ ${balanceAmount}",
+                      "\$\ ${(balanceAmount)!.toStringAsFixed(2)}",
                       style: TextStyle(
                           fontSize: 45,
                           color: Colors.blueGrey,
@@ -92,25 +101,43 @@ class _SpendingScreenState extends State<SpendingScreen> {
             SizedBox(
               height: 10,
             ),
-            Container(
-                height: 50,
-                width: 350,
-                decoration: BoxDecoration(
-                    color: Colors.blue[100],
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Spent this month: x",
-                      style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.blueGrey,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )),
+            StreamBuilder<QuerySnapshot>(
+              stream: _thisMonthsSpendingsStream,
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Text('Loading');
+                }
+
+                if (snapshot.hasError) {
+                  print('Error: ${snapshot.error}');
+                }
+                double totalAmount = 0;
+                snapshot.data!.docs.forEach((document) {
+                  double amount = document['amount'];
+                  totalAmount += amount;
+                });
+                return
+                  Container(
+                      height: 50,
+                      width: 350,
+                      decoration: BoxDecoration(
+                          color: Colors.blue[100],
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Spent this month: \$${totalAmount.toStringAsFixed(2)}",
+                            style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.blueGrey,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ));
+              },
+            ),
             SizedBox(
               height: 10,
             ),
@@ -250,5 +277,22 @@ class _SpendingScreenState extends State<SpendingScreen> {
         .snapshots();
 
     return spendings;
+  }
+
+  Future<Stream<QuerySnapshot>> _getSpendingsThisMonth(String? id) async {
+    DateTime now = DateTime.now();
+    DateTime startOfMonth = DateTime(now.year, now.month, 1);
+    DateTime endOfMonth = DateTime(now.year, now.month + 1, 1).subtract(Duration(days: 1));
+    Timestamp startTimestamp = Timestamp.fromDate(startOfMonth);
+    Timestamp endTimestamp = Timestamp.fromDate(endOfMonth);
+
+    Stream<QuerySnapshot> incomes = await FirebaseFirestore.instance
+        .collection('Spendings')
+        .where('balanceId', isEqualTo: id)
+        .where('currentDate', isGreaterThanOrEqualTo: startTimestamp)
+        .where('currentDate', isLessThanOrEqualTo: endTimestamp)
+        .snapshots();
+
+    return incomes;
   }
 }

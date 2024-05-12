@@ -7,8 +7,9 @@ class Spending{
   final String? title;
   final String? description;
   final String? budgetId;
+  final DateTime? currentDate;
 
-  Spending({this.id,this.balanceId,this.amount, this.title, this.description, this.budgetId});
+  Spending({this.id,this.balanceId,this.amount, this.title, this.description, this.budgetId,this.currentDate});
 
   static Spending fromSnapshot(QueryDocumentSnapshot<Object?> snapshot){
     return Spending(
@@ -16,7 +17,8 @@ class Spending{
         balanceId: snapshot?['balanceId'],
         amount: snapshot?['amount'],
         title : snapshot['title'],
-        description:  snapshot?['description']
+        description:  snapshot?['description'],
+        currentDate: snapshot?['currentDate']
     );
   }
 
@@ -28,6 +30,7 @@ class Spending{
       "title" : title,
       "description":  description,
       "budgetId" : budgetId,
+      "currentDate" : currentDate
     };
   }
 }

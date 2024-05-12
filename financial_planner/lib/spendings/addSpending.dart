@@ -100,11 +100,14 @@ class _AddSpendingState extends State<AddSpending> {
                 height: 50,
                 width: 300,
                 child: ElevatedButton(onPressed: () {
+                  DateTime now = DateTime.now();
+                  DateTime currentDate = DateTime(now.year , now.month, now.day);
                   _addSpending(new Spending(
                     balanceId: balanceId,
                     title: _titleController.text,
                     amount: double.parse(_amountController.text),
                     description: _descriptionController.text,
+                    currentDate: currentDate,
                   ));
                   _updateBalance(Balance(
                     id: balanceId,
@@ -169,7 +172,8 @@ class _AddSpendingState extends State<AddSpending> {
         balanceId: spending.balanceId,
         amount: spending.amount,
         title: spending.title,
-        description: spending.description
+        description: spending.description,
+        currentDate: spending.currentDate
     ).toJson();
 
     spendingCollection.doc(id).set(newSpending);
