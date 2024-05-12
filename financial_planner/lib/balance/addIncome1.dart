@@ -93,11 +93,14 @@ class _AddIncome1State extends State<AddIncome1> {
                 height: 50,
                 width: 300,
                 child: ElevatedButton(onPressed: () {
+                  DateTime now = DateTime.now();
+                  DateTime currentDate = DateTime(now.year , now.month, now.day);
                   _addIncome(new Income(
                     balanceId: widget.balanceId,
                     title: _titleController.text,
                     amount: double.parse(_amountController.text),
                     description: _descriptionController.text,
+                    currentDate: currentDate,
                   ));
                   _updateBalance(Balance(
                     id: widget.balanceId,
@@ -141,7 +144,8 @@ class _AddIncome1State extends State<AddIncome1> {
         balanceId: income.balanceId,
         amount: income.amount,
         title: income.title,
-        description: income.description
+        description: income.description,
+        currentDate: income.currentDate
     ).toJson();
 
     incomeCollection.doc(id).set(newIncome);

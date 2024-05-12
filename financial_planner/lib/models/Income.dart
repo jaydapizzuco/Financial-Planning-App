@@ -7,8 +7,9 @@ class Income{
   final String? title;
   final String? description;
   final String? goalId;
+  final DateTime? currentDate;
 
-  Income({this.id,this.balanceId,this.amount, this.title, this.description, this.goalId});
+  Income({this.id,this.balanceId,this.amount, this.title, this.description, this.goalId, this.currentDate});
 
   static Income fromSnapshot(QueryDocumentSnapshot<Object?> snapshot){
     return Income(
@@ -17,7 +18,8 @@ class Income{
       amount: snapshot?['amount'],
       title : snapshot['title'],
       description:  snapshot?['description'],
-      goalId: snapshot?['goalId']
+      goalId: snapshot?['goalId'],
+      currentDate:  snapshot?['currentDate']
     );
   }
 
@@ -28,7 +30,8 @@ class Income{
       "amount" : amount,
       "title" : title,
       "description":  description,
-      "goalId": goalId
+      "goalId": goalId,
+      "currentDate" :currentDate
     };
   }
 
