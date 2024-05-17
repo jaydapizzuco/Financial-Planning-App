@@ -169,6 +169,20 @@ class _AddBudgetState extends State<AddBudget> {
         .doc()
         .id;
 
+    DateTime today = DateTime.now();
+    DateTime? endDate;
+
+    switch (budget.unitOfTime) {
+      case 'Days':
+        endDate = today.add(Duration(days: budget.timePeriod as int));
+      case 'Weeks':
+        endDate = today.add(Duration(days: 7 * (budget.timePeriod as int)));
+      case 'Months':
+        endDate = DateTime(today.year, today.month + (budget.timePeriod as int), today.day);
+      default:
+        throw ArgumentError('Invalid unit of time');
+    }
+
     final newBudget = Budget(
       id: id,
       userId: budget.userId,
@@ -177,8 +191,8 @@ class _AddBudgetState extends State<AddBudget> {
       name: budget.name,
       description: budget.description,
       timePeriod: budget.timePeriod,
-      unitOfTime: budget.unitOfTime
-
+      unitOfTime: budget.unitOfTime,
+      endDate: endDate,
     ).toJson();
 
     budgetCollection.doc(id).set(newBudget);

@@ -108,8 +108,8 @@ class _BudgetInfoState extends State<BudgetInfo> {
                         legendPosition: LegendPosition.bottom,
                         legendTextStyle: TextStyle(fontSize: 20)
                       ),
-
                     ),
+
                     SizedBox(height: 20,),
                     SizedBox(
                         height: 50,

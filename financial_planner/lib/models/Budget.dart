@@ -9,8 +9,9 @@ class Budget{
   final String? description;
   final int? timePeriod;
   final String? unitOfTime;
+  final DateTime? endDate;
 
-  Budget({this.id,this.userId,this.amount,this.amountUsed,this.name,this.description,this.timePeriod, this.unitOfTime});
+  Budget({this.id,this.userId,this.amount,this.amountUsed,this.name,this.description,this.timePeriod, this.unitOfTime,this.endDate});
 
   static Budget fromSnapshot(QueryDocumentSnapshot<Object?> snapshot){
     return Budget(
@@ -22,6 +23,7 @@ class Budget{
       description: snapshot['description'],
       timePeriod: snapshot['timePeriod'],
       unitOfTime: snapshot['unitOfTime'],
+      endDate: snapshot['endDate'],
     );
   }
 
@@ -35,6 +37,7 @@ class Budget{
       "description" : description,
       "timePeriod" : timePeriod,
       "unitOfTime" : unitOfTime,
+      "endDate" :  endDate,
     };
   }
 }
