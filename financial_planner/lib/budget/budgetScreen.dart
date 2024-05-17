@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'addBudget.dart';
+import 'budgetInfo.dart';
 
 class BudgetScreen extends StatefulWidget {
   final String? userId;
@@ -72,8 +73,8 @@ class _BudgetScreenState extends State<BudgetScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                // GestureDetector(
-                                //    child:
+                                GestureDetector(
+                            child:
                                 Container(
                                   height: 150,
                                   width: 350,
@@ -95,16 +96,16 @@ class _BudgetScreenState extends State<BudgetScreen> {
                                       ),
                                       subtitle: Text(data['description'])),
                                 ),
+                                  onTap: (){
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => BudgetInfo(
+                                        budgetId: data['id'], userId: widget.userId,)),
+                                            (route) => false);
+                                  },
+                                 ),
                                 SizedBox(height: 20,)
-                                //   onTap: (){
-                                //     Navigator.push(context, MaterialPageRoute(builder: (context) => IncomeInfo(id: data['id'])));
-                                //     ScaffoldMessenger.of(context).showSnackBar(
-                                //       const SnackBar(
-                                //         content: Text('A SnackBar has been shown.'),
-                                //       ),
-                                //     );
-                                //   },
-                                // ),
                               ],
                             ));
                       }).toList(),
