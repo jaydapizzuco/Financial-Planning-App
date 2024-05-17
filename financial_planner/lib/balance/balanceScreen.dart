@@ -50,27 +50,27 @@ class _BalanceScreenState extends State<BalanceScreen> {
   void setBalance() async {
     Stream<QuerySnapshot>? correctBalance = await getBalanceById(widget.userId);
 
-    try{
-      StreamBuilder<QuerySnapshot>(
-          stream: correctBalance,
-          builder: (BuildContext context,
-              AsyncSnapshot<QuerySnapshot> snapshot) {
-            snapshot.data!.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data =
-              document.data()! as Map<String, dynamic>;
-
-              num amount = data['amount'];
-
-              setState(() {
-                balanceAmount = amount;
-              });
-
-            });
-            return Text('');
-          }
-      );
-    }catch(e){
-    }
+    // try{
+    //   StreamBuilder<QuerySnapshot>(
+    //       stream: correctBalance,
+    //       builder: (BuildContext context,
+    //           AsyncSnapshot<QuerySnapshot> snapshot) {
+    //         snapshot.data!.docs.map((DocumentSnapshot document) {
+    //           Map<String, dynamic> data =
+    //           document.data()! as Map<String, dynamic>;
+    //
+    //           num amount = data['amount'];
+    //
+    //           setState(() {
+    //             balanceAmount = amount;
+    //           });
+    //
+    //         });
+    //         return Text('');
+    //       }
+    //   );
+    // }catch(e){
+    // }
 
     setState(() {
       _balance = correctBalance;
@@ -301,11 +301,6 @@ class _BalanceScreenState extends State<BalanceScreen> {
         .collection('Balances')
         .where('userId', isEqualTo: widget.userId)
         .snapshots();
-
-    // if (querySnapshot.docs.isNotEmpty) {
-    // Balance balance = Balance.fromSnapshot(querySnapshot.docs.first);
-    // balanceAmount = balance.amount;
-    // }
 
     return balance;
   }
