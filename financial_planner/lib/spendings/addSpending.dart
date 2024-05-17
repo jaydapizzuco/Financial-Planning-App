@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial_planner/navigatingScreens.dart';
 
 import '../models/Balance.dart';
+import '../models/Budget.dart';
 import '../models/Spending.dart';
 import '../models/FirebaseAuthService.dart';
 
@@ -27,8 +28,9 @@ class _AddSpendingState extends State<AddSpending> {
 
   String? balanceId;
   Stream<QuerySnapshot>? _budgetStream;
-  String? associatedBudgetName ;
-  String? associatedBudgetId ;
+  String? associatedBudgetName;
+
+  String? associatedBudgetId;
 
   @override
   void initState() {
@@ -58,7 +60,8 @@ class _AddSpendingState extends State<AddSpending> {
       appBar: AppBar(
         title: Text("New Spending"),
       ),
-      body: Center(
+      body:  Expanded(
+    child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -153,19 +156,22 @@ class _AddSpendingState extends State<AddSpending> {
                 width: 300,
                 child: ElevatedButton(onPressed: () {
                   DateTime now = DateTime.now();
-                  DateTime currentDate = DateTime(now.year , now.month, now.day);
+                  DateTime currentDate = DateTime(now.year, now.month, now.day);
                   _addSpending(new Spending(
                     balanceId: balanceId,
                     title: _titleController.text,
                     amount: double.parse(_amountController.text),
                     description: _descriptionController.text,
+                    budgetId: associatedBudgetId,
                     currentDate: currentDate,
                   ));
                   _updateBalance(Balance(
                     id: balanceId,
                     userId: widget.userId,
-                    amount: widget.balanceAmount! - double.parse(_amountController.text),
+                    amount: widget.balanceAmount! -
+                        double.parse(_amountController.text),
                   ));
+                  _updateBudget(associatedBudgetId,double.parse(_amountController.text));
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                       builder: (context) =>
                           NavigatingScreen(userId: widget.userId)), (
@@ -187,6 +193,7 @@ class _AddSpendingState extends State<AddSpending> {
             ),
           ],
         ),
+      ),
       ),
     );
   }
@@ -215,14 +222,15 @@ class _AddSpendingState extends State<AddSpending> {
   Future<Stream<QuerySnapshot>> _getBudgets(String? id) async {
     Stream<QuerySnapshot> budgets = await FirebaseFirestore.instance
         .collection('Budgets')
-        .where('userId', isEqualTo:  widget.userId)
+        .where('userId', isEqualTo: widget.userId)
         .snapshots();
 
     return budgets;
   }
 
   void _addSpending(Spending spending) {
-    final spendingCollection = FirebaseFirestore.instance.collection("Spendings");
+    final spendingCollection = FirebaseFirestore.instance.collection(
+        "Spendings");
 
     String id = spendingCollection
         .doc()
@@ -251,4 +259,22 @@ class _AddSpendingState extends State<AddSpending> {
 
     balanceCollection.doc(balance.id).update(updatedBalance);
   }
+
+  void _updateBudget(String? budgetId, num spending) async {
+    DocumentReference budget = FirebaseFirestore.instance.collection('Budgets')
+        .doc(budgetId);
+    try {
+      DocumentSnapshot snapshot = await budget.get();
+      if (snapshot.exists) {
+        num currentAmountUsed = snapshot['amountUsed'];
+        num newAmountUsed = currentAmountUsed + spending;
+        await budget.update({
+          'amountUsed': newAmountUsed,
+        });
+      }
+    } catch (e) {
+      print("Error updating document: $e");
+    }
+  }
+
 }
