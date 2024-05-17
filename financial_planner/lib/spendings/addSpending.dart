@@ -242,7 +242,8 @@ class _AddSpendingState extends State<AddSpending> {
         amount: spending.amount,
         title: spending.title,
         description: spending.description,
-        currentDate: spending.currentDate
+        currentDate: spending.currentDate,
+        budgetId: spending.budgetId
     ).toJson();
 
     spendingCollection.doc(id).set(newSpending);
