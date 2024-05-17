@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -45,6 +47,12 @@ class _BudgetScreenState extends State<BudgetScreen> {
                   stream: _budgetStream,
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.data!.docs.isEmpty) {
+                      return Text(
+                        "Looks like you don't have any budgets right now",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                      );
+                    }
                     if (snapshot.hasError) {
                       return Text('something went wrong');
                     }
