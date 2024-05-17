@@ -67,12 +67,12 @@ class _BudgetScreenState extends State<BudgetScreen> {
                                 // GestureDetector(
                                 //    child:
                                 Container(
-                                  height: 100,
+                                  height: 150,
                                   width: 350,
                                   decoration: BoxDecoration(
                                       color: Colors.yellowAccent[100],
                                       borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
+                                          Radius.circular(30))),
                                   child: ListTile(
                                       title: Text(
                                         data['name'] +
@@ -87,7 +87,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                                       ),
                                       subtitle: Text(data['description'])),
                                 ),
-
+                                SizedBox(height: 20,)
                                 //   onTap: (){
                                 //     Navigator.push(context, MaterialPageRoute(builder: (context) => IncomeInfo(id: data['id'])));
                                 //     ScaffoldMessenger.of(context).showSnackBar(

@@ -26,11 +26,15 @@ class _AddSpendingState extends State<AddSpending> {
   TextEditingController _descriptionController = TextEditingController();
 
   String? balanceId;
+  Stream<QuerySnapshot>? _budgetStream;
+  String? associatedBudgetName ;
+  String? associatedBudgetId ;
 
   @override
   void initState() {
     super.initState();
     setBalance();
+    getBudgets();
   }
 
   void setBalance() async {
@@ -39,6 +43,15 @@ class _AddSpendingState extends State<AddSpending> {
       balanceId = id;
     });
   }
+
+  void getBudgets() async {
+    Stream<QuerySnapshot>? _budgets = await _getBudgets(widget.userId);
+
+    setState(() {
+      _budgetStream = _budgets;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,6 +109,45 @@ class _AddSpendingState extends State<AddSpending> {
               ),
             ),
             SizedBox(height: 20,),
+            StreamBuilder<QuerySnapshot>(
+                stream: _budgetStream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('something went wrong');
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Text('Loading');
+                  }
+
+                  List<DropdownMenuItem<String>> dropdownItems = [];
+                  Map<String, String> budgetNames = {};
+
+                  snapshot.data!.docs.forEach((DocumentSnapshot document) {
+                    Map<String, dynamic> data = document.data()! as Map<
+                        String,
+                        dynamic>;
+                    String name = data['name'];
+                    String id = data['id'];
+                    budgetNames[id] = name;
+                    dropdownItems.add(DropdownMenuItem<String>(
+                      value: id,
+                      child: Text(name),
+                    ));
+                  });
+                  return DropdownButton<String>(
+                    hint: Text('Select a Budget'),
+                    value: associatedBudgetId,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        associatedBudgetId = newValue;
+                        associatedBudgetName = budgetNames[newValue];
+                      });
+                    },
+                    items: dropdownItems,
+                  );
+                }),
+
             SizedBox(
                 height: 50,
                 width: 300,
@@ -158,6 +210,15 @@ class _AddSpendingState extends State<AddSpending> {
     }
 
     return balanceId;
+  }
+
+  Future<Stream<QuerySnapshot>> _getBudgets(String? id) async {
+    Stream<QuerySnapshot> budgets = await FirebaseFirestore.instance
+        .collection('Budgets')
+        .where('userId', isEqualTo:  widget.userId)
+        .snapshots();
+
+    return budgets;
   }
 
   void _addSpending(Spending spending) {
