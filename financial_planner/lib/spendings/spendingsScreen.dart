@@ -226,7 +226,6 @@ class _SpendingScreenState extends State<SpendingScreen> {
         label: Text('Add Spending'),
         icon: Icon(Icons.add),
       ),
-      //)
     );
   }
 

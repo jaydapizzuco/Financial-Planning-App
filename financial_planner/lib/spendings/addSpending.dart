@@ -12,7 +12,8 @@ class AddSpending extends StatefulWidget {
 
   final String? userId;
   final num? balanceAmount;
-  const AddSpending({required this.userId, required this.balanceAmount});
+  final String? budgetId;
+  const AddSpending({required this.userId, required this.balanceAmount, this.budgetId});
 
   @override
   State<AddSpending> createState() => _AddSpendingState();
@@ -29,7 +30,6 @@ class _AddSpendingState extends State<AddSpending> {
   String? balanceId;
   Stream<QuerySnapshot>? _budgetStream;
   String? associatedBudgetName;
-
   String? associatedBudgetId;
 
   @override
@@ -37,6 +37,7 @@ class _AddSpendingState extends State<AddSpending> {
     super.initState();
     setBalance();
     getBudgets();
+    associatedBudgetId = widget.budgetId;
   }
 
   void setBalance() async {
