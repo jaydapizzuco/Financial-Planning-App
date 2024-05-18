@@ -231,7 +231,8 @@ class _BalanceScreenState extends State<BalanceScreen> {
                         return Text('Loading');
                       }
                       return Expanded(
-                          child: ListView(
+                          child:
+                          ListView(
                             shrinkWrap: true,
                             children:
                             snapshot.data!.docs.map((DocumentSnapshot document) {
