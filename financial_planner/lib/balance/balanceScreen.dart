@@ -47,37 +47,17 @@ class _BalanceScreenState extends State<BalanceScreen> {
     });
   }
 
+  void setGainedThisMonth(String? balanceId, num amount) async {
+      _updateBalance(balanceId,amount);
+  }
+
   void setBalance() async {
     Stream<QuerySnapshot>? correctBalance = await getBalanceById(widget.userId);
-
-    // try{
-    //   StreamBuilder<QuerySnapshot>(
-    //       stream: correctBalance,
-    //       builder: (BuildContext context,
-    //           AsyncSnapshot<QuerySnapshot> snapshot) {
-    //         snapshot.data!.docs.map((DocumentSnapshot document) {
-    //           Map<String, dynamic> data =
-    //           document.data()! as Map<String, dynamic>;
-    //
-    //           num amount = data['amount'];
-    //
-    //           setState(() {
-    //             balanceAmount = amount;
-    //           });
-    //
-    //         });
-    //         return Text('');
-    //       }
-    //   );
-    // }catch(e){
-    // }
 
     setState(() {
       _balance = correctBalance;
     });
   }
-
-
 
   void getIncomes() async {
     Stream<QuerySnapshot>? _incomes = await _getIncomes(balanceId);
@@ -169,6 +149,8 @@ class _BalanceScreenState extends State<BalanceScreen> {
                       double amount = document['amount'];
                       totalAmount += amount;
                     });
+                    setGainedThisMonth(balanceId,totalAmount);
+
                     return
                     Container(
                         height: 50,
@@ -362,6 +344,22 @@ class _BalanceScreenState extends State<BalanceScreen> {
         .snapshots();
 
     return incomes;
+  }
+
+  void _updateBalance(String? balanceId, num incomeThisMonth) async {
+    DocumentReference balance = FirebaseFirestore.instance.collection(
+        'Balances')
+        .doc(balanceId);
+    try {
+      DocumentSnapshot snapshot = await balance.get();
+      if (snapshot.exists) {
+        await balance.update({
+          'gainedThisMonth': incomeThisMonth,
+        });
+      }
+    } catch (e) {
+      print("Error updating document: $e");
+    }
   }
 
   Future<Stream<QuerySnapshot>> _getIncomes(String? id) async {
