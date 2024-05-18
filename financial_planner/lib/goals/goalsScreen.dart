@@ -123,7 +123,7 @@ class _GoalScreenState extends State<GoalScreen> {
                                           height: 140,
                                           width: 350,
                                           decoration: BoxDecoration(
-                                              color: Colors.yellowAccent[100],
+                                              color: Colors.pinkAccent[100],
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(30))),
                                           child: ListTile(
