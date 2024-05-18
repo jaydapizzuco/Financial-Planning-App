@@ -76,195 +76,209 @@ class _SpendingScreenState extends State<SpendingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Account Balance"),
-      ),
-      body: Center(
-        //child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            StreamBuilder<QuerySnapshot>(
-                stream: _balance,
+    if (_spendingsStream == null || _balance == null ||
+        _thisMonthsSpendingsStream == null || balanceId == null) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Account Balance"),
+        ),
+        body: Center(
+          //child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              StreamBuilder<QuerySnapshot>(
+                  stream: _balance,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('something went wrong');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text('Loading');
+                    }
+                    return ListView(
+                      shrinkWrap: true,
+                      children:
+                      snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> data =
+                        document.data()! as Map<String, dynamic>;
+                        balanceId = data['id'];
+                        balanceAmount = data['amount'];
+                        return Container(
+                          height: 150,
+                          width: 350,
+                          decoration: BoxDecoration(
+                              color: Colors.blue[100],
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(20))),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Account Balance",
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.blueGrey,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "\$\ ${data['amount'].toStringAsFixed(2)}",
+                                style: TextStyle(
+                                    fontSize: 45,
+                                    color: Colors.blueGrey,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  }),
+              SizedBox(
+                height: 10,
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: _thisMonthsSpendingsStream,
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('something went wrong');
-                  }
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Text('Loading');
                   }
-                  return ListView(
-                    shrinkWrap: true,
-                    children:
-                    snapshot.data!.docs.map((DocumentSnapshot document) {
-                      Map<String, dynamic> data =
-                      document.data()! as Map<String, dynamic>;
-                      balanceId = data['id'];
-                      balanceAmount = data['amount'];
-                      return Container(
-                        height: 150,
+
+                  if (snapshot.hasError) {
+                    print('Error: ${snapshot.error}');
+                  }
+                  double totalAmount = 0;
+                  snapshot.data!.docs.forEach((document) {
+                    double amount = document['amount'];
+                    totalAmount += amount;
+                  });
+                  setSpentThisMonth(balanceId, totalAmount);
+                  return
+                    Container(
+                        height: 50,
                         width: 350,
                         decoration: BoxDecoration(
                             color: Colors.blue[100],
-                            borderRadius: BorderRadius.all(Radius.circular(20))),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(20))),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "Account Balance",
+                              "Spent this month: \$${totalAmount
+                                  .toStringAsFixed(2)}",
                               style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.blueGrey,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "\$\ ${data['amount'].toStringAsFixed(2)}",
-                              style: TextStyle(
-                                  fontSize: 45,
+                                  fontSize: 24,
                                   color: Colors.blueGrey,
                                   fontWeight: FontWeight.bold),
                             ),
                           ],
-                        ),
-                      );
-
-                    }).toList(),
-                  );
-                }),
-            SizedBox(
-              height: 10,
-            ),
-            StreamBuilder<QuerySnapshot>(
-              stream: _thisMonthsSpendingsStream,
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text('Loading');
-                }
-
-                if (snapshot.hasError) {
-                  print('Error: ${snapshot.error}');
-                }
-                double totalAmount = 0;
-                snapshot.data!.docs.forEach((document) {
-                  double amount = document['amount'];
-                  totalAmount += amount;
-                });
-                setSpentThisMonth(balanceId,totalAmount);
-                return
-                  Container(
-                      height: 50,
-                      width: 350,
-                      decoration: BoxDecoration(
-                          color: Colors.blue[100],
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Spent this month: \$${totalAmount.toStringAsFixed(2)}",
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.blueGrey,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ));
-              },
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-                height: 50,
-                width: 350,
-                decoration: BoxDecoration(
-                    color: Colors.blue[100],
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Monthly average: x",
-                      style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.blueGrey,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Spendings",
-              style: TextStyle(fontSize: 24),
-            ),
-            StreamBuilder<QuerySnapshot>(
-                stream: _spendingsStream,
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('something went wrong');
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text('Loading');
-                  }
-                  return Expanded(
-                      child: ListView(
-                    shrinkWrap: true,
-                    children:
-                        snapshot.data!.docs.map((DocumentSnapshot document) {
-                      Map<String, dynamic> data =
-                          document.data()! as Map<String, dynamic>;
-                      return Container(
-                          width: 200,
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 80,
-                                width: 350,
-                                decoration: BoxDecoration(
-                                    color: Colors.pinkAccent[100],
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                child: ListTile(
-                                    title: Text(data['title'] +
-                                        " \n  \$\ " +
-                                        data['amount'].toString()),
-                                    subtitle: Text(data['description'])),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              )
-                            ],
-                          ));
-                    }).toList(),
-                  ));
-                })
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AddSpending(
-                    userId: widget.userId,
-                    balanceAmount: balanceAmount,
+                        ));
+                },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                  height: 50,
+                  width: 350,
+                  decoration: BoxDecoration(
+                      color: Colors.blue[100],
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Monthly average: x",
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.blueGrey,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   )),
-                  (route) => false);
-        },
-        label: Text('Add Spending'),
-        icon: Icon(Icons.add),
-      ),
-    );
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Spendings",
+                style: TextStyle(fontSize: 24),
+              ),
+              StreamBuilder<QuerySnapshot>(
+                  stream: _spendingsStream,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('something went wrong');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text('Loading');
+                    }
+                    return Expanded(
+                        child: ListView(
+                          shrinkWrap: true,
+                          children:
+                          snapshot.data!.docs.map((DocumentSnapshot document) {
+                            Map<String, dynamic> data =
+                            document.data()! as Map<String, dynamic>;
+                            return Container(
+                                width: 200,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 80,
+                                      width: 350,
+                                      decoration: BoxDecoration(
+                                          color: Colors.pinkAccent[100],
+                                          borderRadius:
+                                          BorderRadius.all(
+                                              Radius.circular(20))),
+                                      child: ListTile(
+                                          title: Text(data['title'] +
+                                              " \n  \$\ " +
+                                              data['amount'].toString()),
+                                          subtitle: Text(data['description'])),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    )
+                                  ],
+                                ));
+                          }).toList(),
+                        ));
+                  })
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        AddSpending(
+                          userId: widget.userId,
+                          balanceAmount: balanceAmount,
+                        )),
+                    (route) => false);
+          },
+          label: Text('Add Spending'),
+          icon: Icon(Icons.add),
+        ),
+      );
+    }
   }
 
   Future<num?> getBalanceAmountById(String? id) async {
