@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/progress_bar/gf_progress_bar.dart';
+import 'package:getwidget/getwidget.dart';
 import 'addGoal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -102,6 +104,8 @@ class _GoalScreenState extends State<GoalScreen> {
                             shrinkWrap: true,
                             children: snapshot.data!.docs.map((DocumentSnapshot document){
                               Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                              double ispercentage = double.parse((data['amountCompleted'] / data['goalAmount']).toStringAsFixed(2));
+                              int perDisplay = (ispercentage * 100).toInt();
                               return Container(
                                   width: 200,
                                   child: Column(
@@ -111,7 +115,7 @@ class _GoalScreenState extends State<GoalScreen> {
                                       GestureDetector(
                                         child:
                                         Container(
-                                          height: 150,
+                                          height: 140,
                                           width: 350,
                                           decoration: BoxDecoration(
                                               color: Colors.yellowAccent[100],
@@ -129,7 +133,18 @@ class _GoalScreenState extends State<GoalScreen> {
                                                   fontSize: 28,
                                                 ),
                                               ),
-                                              subtitle: Text(data['description'])),
+                                              subtitle: GFProgressBar(
+                                                percentage: ispercentage,
+                                                backgroundColor : Colors.black,
+                                                progressBarColor: Colors.green,
+                                                lineHeight: 25,
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(right: 5),
+                                                  child: Text('${perDisplay}%', textAlign: TextAlign.end,
+                                                    style: TextStyle(fontSize: 17, color: Colors.white),
+                                                  ),
+                                                ),
+                                              )),
                                         ),
                                         onTap: (){
                                           Navigator.pushAndRemoveUntil(

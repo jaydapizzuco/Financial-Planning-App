@@ -5,6 +5,7 @@ import '../models/Goal.dart';
 import '../models/FirebaseAuthService.dart';
 import '../navigatingScreens.dart';
 import 'package:intl/intl.dart';
+import 'package:getwidget/getwidget.dart';
 
 class AddGoal extends StatefulWidget {
 
