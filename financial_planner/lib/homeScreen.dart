@@ -22,12 +22,20 @@ class _HomeScreenState extends State<HomeScreen> {
   String?  imageId;
   num? _gainedThisMonth;
   num? _spentThisMonth;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    setUsername();
-    setGainedAndSpentThisMonth();
+    fetchData();
+  }
+
+  void fetchData() async {
+     setUsername();
+     setGainedAndSpentThisMonth();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void setUsername() async {
@@ -78,49 +86,61 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text("HomePage",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
-                Text("Welcome Back ${username}",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+    if (isLoading || imageId == null || _gainedThisMonth ==  null || _spentThisMonth == null) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else {
+      return Scaffold(
+        body: Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text("HomePage",
+                    style: TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold),),
+                  Text("Welcome Back ${username}",
+                    style: TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold),),
 
-                FutureBuilder<Map<String, dynamic>>(
-                    future: fetchImageDetails(imageId!),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else {
-                        final imageUrl = snapshot.data!['urls']['regular'];
-                        return Center(
-                          child: Image.network(
-                            imageUrl,
-                            width: 300,
-                            height: 300,
-                            fit: BoxFit.cover,
-                          ),
-                        );
-                      }
-                    }),
-                SizedBox(
-                    width: 200,
-                    child: ElevatedButton(onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                          builder: (context) => LoginScreen()), (
-                          route) => false);
-                    }, child: Text("Logout", style: TextStyle(fontSize: 24),)
-                    )
-                ),
-              ]
-          )
-      ),
-    );
+                  FutureBuilder<Map<String, dynamic>>(
+                      future: fetchImageDetails(imageId!),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else {
+                          final imageUrl = snapshot.data!['urls']['regular'];
+                          return Center(
+                            child: Image.network(
+                              imageUrl,
+                              width: 300,
+                              height: 300,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        }
+                      }),
+                  SizedBox(
+                      width: 200,
+                      child: ElevatedButton(onPressed: () {
+                        FirebaseAuth.instance.signOut();
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                            builder: (context) => LoginScreen()), (
+                            route) => false);
+                      }, child: Text("Logout", style: TextStyle(fontSize: 24),)
+                      )
+                  ),
+                ]
+            )
+        ),
+      );
+    }
   }
 
   Future<String?> getUsernameById(String? id) async {
