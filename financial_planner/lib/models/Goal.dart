@@ -7,9 +7,9 @@ class Goal{
   final double? amountCompleted;
   final String? name;
   final String? description;
-  final int? startDate;
-  final int? endDate;
-  final String? status;
+  final String? startDate;
+  final String? endDate;
+  final int? status;
   final int? daysReached;
 
   Goal({this.id,this.userId,this.goalAmount,this.amountCompleted,this.name,this.description,this.startDate, this.endDate, this.status, this.daysReached});

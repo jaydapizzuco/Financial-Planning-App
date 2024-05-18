@@ -55,7 +55,13 @@ class _GoalScreenState extends State<GoalScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){
-
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddGoal(
+                    userId: widget.userId,
+                  )),
+                  (route) => false);
         },
         label: Text('Add Goal'),
         icon: Icon(Icons.add),
