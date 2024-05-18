@@ -7,8 +7,8 @@ class Goal{
   final double? amountCompleted;
   final String? name;
   final String? description;
-  final String? startDate;
-  final String? endDate;
+  final int? startDate;
+  final int? endDate;
   final int? status;
   final int? daysReached;
 

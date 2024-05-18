@@ -128,8 +128,8 @@ class _AddGoalState extends State<AddGoal> {
                     amountCompleted: 0,
                     name: _nameController.text,
                     description: _descriptionController.text,
-                    startDate: DateFormat('yyyyMMdd').format(startDate),
-                    endDate: DateFormat('yyyyMMdd').format(endDate),
+                    startDate: int.parse(DateFormat('yyyyMMdd').format(startDate)),
+                    endDate: int.parse(DateFormat('yyyyMMdd').format(endDate)),
                     status: 0,
                     daysReached: 0,
                   ));

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'goalInfo.dart';
+import 'package:rxdart/rxdart.dart';
 
 class GoalScreen extends StatefulWidget {
   final String? userId;
@@ -177,15 +178,37 @@ class _GoalScreenState extends State<GoalScreen> {
 
 
   Future <Stream<QuerySnapshot>> _getGoalsInProgress(String? id) async {
+    int date = 20240518;
 
-    Stream<QuerySnapshot> goals = await FirebaseFirestore.instance
+    Stream<QuerySnapshot> goalsUser = await FirebaseFirestore.instance
         .collection('Goals')
         .where('userId', isEqualTo: id)
         .where('status', isEqualTo: 0)
-        .where('startDate', isLessThan: dateNow)
+        .where('startDate', isLessThanOrEqualTo: date)
         .snapshots();
 
-    return goals;
+    Stream<QuerySnapshot> goalsStartdate = await FirebaseFirestore.instance
+        .collection('Goals')
+        .where('startDate', isLessThanOrEqualTo: date)
+        .snapshots();
+
+    // Stream<QuerySnapshot> goals = Rx.combineLatest2(goalsUser, goalsStartdate,
+    //       (QuerySnapshot goalsUser, QuerySnapshot goalsStartdate) {
+    //     List<DocumentSnapshot> goalsUserList = goalsUser.docs;
+    //     List<DocumentSnapshot> goalsStartdateList = goalsStartdate.docs;
+    //
+    //     // Find the overlapping documents
+    //     List<DocumentSnapshot> combined = goalsUserList.where((userIdAndStatusDoc) {
+    //       return goalsStartdateList.any((startDateDoc) =>
+    //       userIdAndStatusDoc.id == startDateDoc.id); // Assuming both streams have a common identifier
+    //     }).toList();
+    //
+    //     //return QuerySnapshot(docs: overlappingDocs);
+    //
+    //   },
+    // );
+
+    return goalsUser;
   }
 
   Future <Stream<QuerySnapshot>> _getFutureGoals(String? id) async {
