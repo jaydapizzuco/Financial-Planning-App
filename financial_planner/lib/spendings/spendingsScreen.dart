@@ -19,6 +19,7 @@ class SpendingScreen extends StatefulWidget {
 class _SpendingScreenState extends State<SpendingScreen> {
   num? balanceAmount;
   String? balanceId;
+  Stream<QuerySnapshot>? _balance;
   Stream<QuerySnapshot>? _spendingsStream;
   Stream<QuerySnapshot>? _thisMonthsSpendingsStream;
 
@@ -27,6 +28,7 @@ class _SpendingScreenState extends State<SpendingScreen> {
     super.initState();
     setBalance();
     setBalanceId();
+    setBalanceStream();
   }
 
   void setBalanceId() async {
@@ -50,9 +52,17 @@ class _SpendingScreenState extends State<SpendingScreen> {
   }
 
   void setBalance() async {
-    num? amount = await getBalanceById(widget.userId);
+    num? amount = await getBalanceAmountById(widget.userId);
     setState(() {
       balanceAmount = amount;
+    });
+  }
+
+  void setBalanceStream() async {
+    Stream<QuerySnapshot>? correctBalance = await getBalanceById(widget.userId);
+
+    setState(() {
+      _balance = correctBalance;
     });
   }
 
@@ -76,32 +86,55 @@ class _SpendingScreenState extends State<SpendingScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-                height: 100,
-                width: 350,
-                decoration: BoxDecoration(
-                    color: Colors.blue[100],
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Account Balance",
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.blueGrey,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "\$\ ${(balanceAmount)!.toStringAsFixed(2)}",
-                      style: TextStyle(
-                          fontSize: 45,
-                          color: Colors.blueGrey,
-                          fontWeight: FontWeight.bold),
-                    )
-                  ],
-                )),
+            StreamBuilder<QuerySnapshot>(
+                stream: _balance,
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('something went wrong');
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Text('Loading');
+                  }
+                  return ListView(
+                    shrinkWrap: true,
+                    children:
+                    snapshot.data!.docs.map((DocumentSnapshot document) {
+                      Map<String, dynamic> data =
+                      document.data()! as Map<String, dynamic>;
+                      balanceId = data['id'];
+                      balanceAmount = data['amount'];
+                      return Container(
+                        height: 150,
+                        width: 350,
+                        decoration: BoxDecoration(
+                            color: Colors.blue[100],
+                            borderRadius: BorderRadius.all(Radius.circular(20))),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Account Balance",
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.blueGrey,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "\$\ ${data['amount'].toStringAsFixed(2)}",
+                              style: TextStyle(
+                                  fontSize: 45,
+                                  color: Colors.blueGrey,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      );
+
+                    }).toList(),
+                  );
+                }),
             SizedBox(
               height: 10,
             ),
@@ -234,7 +267,7 @@ class _SpendingScreenState extends State<SpendingScreen> {
     );
   }
 
-  Future<num?> getBalanceById(String? id) async {
+  Future<num?> getBalanceAmountById(String? id) async {
     num? balanceAmount;
 
     try {
@@ -314,5 +347,13 @@ class _SpendingScreenState extends State<SpendingScreen> {
         .snapshots();
 
     return incomes;
+  }
+  Future<Stream<QuerySnapshot>> getBalanceById(String? id) async {
+    Stream<QuerySnapshot> balance = await FirebaseFirestore.instance
+        .collection('Balances')
+        .where('userId', isEqualTo: widget.userId)
+        .snapshots();
+
+    return balance;
   }
 }

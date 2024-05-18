@@ -139,6 +139,8 @@ void _addUserToDb(UserModel userModel){
     id: balanceId,
     userId: id,
     amount: 0,
+    gainedThisMonth: 0,
+    spentThisMonth: 0,
   ).toJson();
 
   balanceCollection.doc(balanceId).set(newBalance);
