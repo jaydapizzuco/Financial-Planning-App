@@ -68,49 +68,55 @@ class _BudgetInfoState extends State<BudgetInfo> {
           Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
           if(data['endDate'] != null) {
-
             int years = data['endDate'].toDate().year - today.year;
-            int months = data['endDate'].toDate().month - today.month;
-            int days = data['endDate'].toDate().day - today.day;
+            int months =  data['endDate'].toDate().month - today.month;
+            int days =  data['endDate'].toDate().day - today.day;
 
+            // if days difference is negative
             if (days < 0) {
-              final previousMonthDate = DateTime(data['endDate'].toDate().year, data['endDate'].toDate().month, 0);
+              final previousMonthDate = DateTime( data['endDate'].toDate().year,  data['endDate'].toDate().month, 0);
               days += previousMonthDate.day;
               months -= 1;
             }
 
+            // if months difference is negative
             if (months < 0) {
               months += 12;
               years -= 1;
             }
 
-            if (years < 0) {
-              months = 0;
-              days = data['endDate'].toDate().difference(today).inDays;
+            // past dates
+            if (years < 0 || (years == 0 && months < 0)) {
               years = 0;
+              months = 0;
+              days =  data['endDate'].toDate().difference(today).inDays;
             }
 
-            int totalDaysDifference = data['endDate'].toDate().difference(today).inDays;
-            int totalWeeks = totalDaysDifference ~/ 7;
-            int weeks = totalWeeks % 4;
-            days = totalDaysDifference % 7;
+            // If the date is in the future, calculate weeks and days
+            if (years == 0 && months == 0) {
+              int totalDaysDifference =  data['endDate'].toDate().difference(today).inDays;
+              int totalWeeks = totalDaysDifference ~/ 7;
+              int weeks = totalWeeks;
+              days = totalDaysDifference % 7;
 
-            timeLeft = ""; // Initialize the timeLeft string inside the if block
+              timeLeft =
+              "";
 
-            if (years > 0) {
-              timeLeft += "$years ${years == 1 ? 'Year' : 'Years'} ";
-            }
-            if (months > 0) {
-              timeLeft += "$months ${months == 1 ? 'Month' : 'Months'} ";
-            }
-            if (weeks > 0) {
-              timeLeft += "$weeks ${weeks == 1 ? 'Week' : 'Weeks'} ";
-            }
-            if (days > 0) {
-              timeLeft += "$days ${days == 1 ? 'Day' : 'Days'} ";
-            }
+              if (years > 0) {
+                timeLeft += "$years ${years == 1 ? 'Year' : 'Years'} ";
+              }
+              if (months > 0) {
+                timeLeft += "$months ${months == 1 ? 'Month' : 'Months'} ";
+              }
+              if (weeks > 0) {
+                timeLeft += "$weeks ${weeks == 1 ? 'Week' : 'Weeks'} ";
+              }
+              if (days > 0) {
+                timeLeft += "$days ${days == 1 ? 'Day' : 'Days'} ";
+              }
 
-            timeLeft += "Until Budget Resets";
+              timeLeft += "Until Budget Resets";
+            }
           }
 
           Map<String,double> dataMap = {
