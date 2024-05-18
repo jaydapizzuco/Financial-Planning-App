@@ -34,15 +34,19 @@ class _SpendingScreenState extends State<SpendingScreen> {
     setState(() {
       balanceId = id;
       getIncomes();
-      setThisMonthsIncomeStream();
+      setThisMonthsSpendingsStream();
     });
   }
 
-  void setThisMonthsIncomeStream() async {
+  void setThisMonthsSpendingsStream() async {
     Stream<QuerySnapshot>? spendings = await _getSpendingsThisMonth(balanceId);
     setState(() {
       _thisMonthsSpendingsStream = spendings;
     });
+  }
+
+  void setSpentThisMonth(String? balanceId, num amount) async {
+    _updateBalance(balanceId,amount);
   }
 
   void setBalance() async {
@@ -116,6 +120,7 @@ class _SpendingScreenState extends State<SpendingScreen> {
                   double amount = document['amount'];
                   totalAmount += amount;
                 });
+                setSpentThisMonth(balanceId,totalAmount);
                 return
                   Container(
                       height: 50,
@@ -276,6 +281,22 @@ class _SpendingScreenState extends State<SpendingScreen> {
         .snapshots();
 
     return spendings;
+  }
+
+  void _updateBalance(String? balanceId, num spendingsThisMonth) async {
+    DocumentReference balance = FirebaseFirestore.instance.collection(
+        'Balances')
+        .doc(balanceId);
+    try {
+      DocumentSnapshot snapshot = await balance.get();
+      if (snapshot.exists) {
+        await balance.update({
+          'spentThisMonth': spendingsThisMonth,
+        });
+      }
+    } catch (e) {
+      print("Error updating document: $e");
+    }
   }
 
   Future<Stream<QuerySnapshot>> _getSpendingsThisMonth(String? id) async {
