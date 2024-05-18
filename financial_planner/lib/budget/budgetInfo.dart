@@ -62,7 +62,7 @@ class _BudgetInfoState extends State<BudgetInfo> {
             return Text('something went wrong');
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text('Loading');
+            return CircularProgressIndicator();
           }
           DocumentSnapshot document = snapshot.data!.docs.first;
           Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
