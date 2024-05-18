@@ -29,7 +29,7 @@ class _GoalScreenState extends State<GoalScreen> {
   }
 
   void getGoals() async {
-    Stream<QuerySnapshot>? _goals = await _getGoals(widget.userId);
+    Stream<QuerySnapshot>? _goals = await _getGoalsInProgress(widget.userId);
 
     setState(() {
       _goalsStream = _goals;
@@ -51,7 +51,104 @@ class _GoalScreenState extends State<GoalScreen> {
         title: Text('Goals'),
       ),
       body: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    //button to see future goals
+                    ElevatedButton(
+                        onPressed: (){
 
+                        }, child: Text('Future goals')),
+                    SizedBox(height: 10,),
+                    //button to see completed goals
+                    ElevatedButton(
+                        onPressed: (){
+
+                        }, child: Text('Completed goals')),
+                    SizedBox(height: 10,),
+                    //button to see failed goals
+                    ElevatedButton(
+                        onPressed: (){
+
+                        }, child: Text('Failed goals')),
+                    SizedBox(height: 10,),
+                  ],
+                ),
+
+
+                StreamBuilder<QuerySnapshot>(
+                    stream: _goalsStream,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot){
+                      if(snapshot.data != null && snapshot.data!.docs.isEmpty){
+                        return Text(
+                          "Looks like you dont have Goals right now",
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return Text('something went wrong');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text('Loading');
+                      }
+                      return Expanded(
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: snapshot.data!.docs.map((DocumentSnapshot document){
+                              Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                              return Container(
+                                  width: 200,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        child:
+                                        Container(
+                                          height: 150,
+                                          width: 350,
+                                          decoration: BoxDecoration(
+                                              color: Colors.yellowAccent[100],
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(30))),
+                                          child: ListTile(
+                                              title: Text(
+                                                data['name'] +
+                                                    "\n\$\ " +
+                                                    (data['goalAmount'] -
+                                                        data['amountCompleted'])
+                                                        .toString() +
+                                                    " remaining",
+                                                style: TextStyle(
+                                                  fontSize: 28,
+                                                ),
+                                              ),
+                                              subtitle: Text(data['description'])),
+                                        ),
+                                        onTap: (){
+                                          Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => GoalInfo(
+                                                    userId: widget.userId, goalId: data['id'],)),
+                                                  (route) => false);
+                                        },
+                                      ),
+                                      SizedBox(height: 20,)
+                                    ],
+                                  ));
+                            }).toList(),
+                          )
+                      );
+                    })
+
+              ]
+          )
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){
@@ -78,12 +175,14 @@ class _GoalScreenState extends State<GoalScreen> {
     return goals;
   }
 
-  /*
+
   Future <Stream<QuerySnapshot>> _getGoalsInProgress(String? id) async {
+
     Stream<QuerySnapshot> goals = await FirebaseFirestore.instance
         .collection('Goals')
         .where('userId', isEqualTo: id)
-        .where('status', isEqualTo: 'inProgress')
+        .where('status', isEqualTo: 0)
+        .where('startDate', isLessThan: dateNow)
         .snapshots();
 
     return goals;
@@ -98,7 +197,7 @@ class _GoalScreenState extends State<GoalScreen> {
     Stream<QuerySnapshot> goals = await FirebaseFirestore.instance
         .collection('Goals')
         .where('userId', isEqualTo: id)
-        .where('startDate', isGreaterThan: dNow)
+        .where('startDate', isGreaterThan: dateNow)
         .snapshots();
 
     return goals;
@@ -108,13 +207,24 @@ class _GoalScreenState extends State<GoalScreen> {
 
   Future <Stream<QuerySnapshot>> _getCompletedGoals(String? id) async {
 
+    Stream<QuerySnapshot> goals = await FirebaseFirestore.instance
+        .collection('Goals')
+        .where('userId', isEqualTo: id)
+        .where('status', isEqualTo: 1)
+        .snapshots();
 
+    return goals;
+  }
+
+  Future <Stream<QuerySnapshot>> _getFailedGoals(String? id) async {
 
     Stream<QuerySnapshot> goals = await FirebaseFirestore.instance
         .collection('Goals')
         .where('userId', isEqualTo: id)
+        .where('status', isEqualTo: 0)
+        .where('endDate', isLessThan: dateNow)
         .snapshots();
 
     return goals;
-  }*/
+  }
 }

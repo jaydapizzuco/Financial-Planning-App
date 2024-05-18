@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class GoalInfo extends StatefulWidget {
-  const GoalInfo({super.key});
+  final String? userId;
+  final String? goalId;
+  const GoalInfo({required this.userId, required this.goalId});
 
   @override
   State<GoalInfo> createState() => _GoalInfoState();

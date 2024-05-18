@@ -16,7 +16,7 @@ class BudgetScreen extends StatefulWidget {
 }
 
 class _BudgetScreenState extends State<BudgetScreen> {
-  Stream<QuerySnapshot>? _budgetStream;
+  Stream<QuerySnapshot>? _budgetStream = null;
 
   @override
   void initState() {
