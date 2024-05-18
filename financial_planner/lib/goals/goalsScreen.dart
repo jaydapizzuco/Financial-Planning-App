@@ -87,7 +87,7 @@ class _GoalScreenState extends State<GoalScreen> {
                         AsyncSnapshot<QuerySnapshot> snapshot){
                       if(snapshot.data != null && snapshot.data!.docs.isEmpty){
                         return Text(
-                          "Looks like you dont have Goals right now",
+                          "Looks like you dont have Goals in progress right now",
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                         );
                       }
@@ -178,7 +178,9 @@ class _GoalScreenState extends State<GoalScreen> {
 
 
   Future <Stream<QuerySnapshot>> _getGoalsInProgress(String? id) async {
-    int date = 20240518;
+    //int date = 20240518;
+    DateTime date = DateTime.now();
+    Timestamp timestampNow = Timestamp.fromDate(date);
 
     Stream<QuerySnapshot> goalsUser = await FirebaseFirestore.instance
         .collection('Goals')
@@ -187,10 +189,10 @@ class _GoalScreenState extends State<GoalScreen> {
         .where('startDate', isLessThanOrEqualTo: date)
         .snapshots();
 
-    Stream<QuerySnapshot> goalsStartdate = await FirebaseFirestore.instance
-        .collection('Goals')
-        .where('startDate', isLessThanOrEqualTo: date)
-        .snapshots();
+    // Stream<QuerySnapshot> goalsStartdate = await FirebaseFirestore.instance
+    //     .collection('Goals')
+    //     .where('startDate', isLessThanOrEqualTo: date)
+    //     .snapshots();
 
     // Stream<QuerySnapshot> goals = Rx.combineLatest2(goalsUser, goalsStartdate,
     //       (QuerySnapshot goalsUser, QuerySnapshot goalsStartdate) {

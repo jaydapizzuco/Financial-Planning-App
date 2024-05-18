@@ -128,8 +128,8 @@ class _AddGoalState extends State<AddGoal> {
                     amountCompleted: 0,
                     name: _nameController.text,
                     description: _descriptionController.text,
-                    startDate: int.parse(DateFormat('yyyyMMdd').format(startDate)),
-                    endDate: int.parse(DateFormat('yyyyMMdd').format(endDate)),
+                    startDate: startDate,
+                    endDate: endDate,
                     status: 0,
                     daysReached: 0,
                   ));
@@ -138,7 +138,7 @@ class _AddGoalState extends State<AddGoal> {
                           NavigatingScreen(userId: widget.userId)), (
                       route) => false);
                 },
-                  child: Text("Create Budget", style: TextStyle(fontSize: 20),),
+                  child: Text("Create Goal", style: TextStyle(fontSize: 20),),
                 )
             ),
             SizedBox(
