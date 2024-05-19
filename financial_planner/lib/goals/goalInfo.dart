@@ -164,7 +164,7 @@ class _GoalInfoState extends State<GoalInfo> {
                                       Navigator.pushAndRemoveUntil(
                                           context, MaterialPageRoute(
                                           builder: (context) =>
-                                              NavigatingScreen(userId: widget.userId)), (
+                                              NavigatingScreen(userId: widget.userId,page: 4,)), (
                                           route) => false);
                                     },
                                       child: Text(

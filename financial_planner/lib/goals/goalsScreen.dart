@@ -25,6 +25,14 @@ class _GoalScreenState extends State<GoalScreen> {
 
   int? dateNow;
 
+  List <Color> colors = [
+    Color(0xFFF06292),
+    Color(0xFFFFCC80),
+    Color(0xFFD0FFC9),
+    Color(0xFFB76FFF)
+  ];
+  int colorIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -112,6 +120,7 @@ class _GoalScreenState extends State<GoalScreen> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Text('Loading');
                       }
+
                       return Expanded(
                           child: ListView(
                             shrinkWrap: true,
@@ -119,6 +128,10 @@ class _GoalScreenState extends State<GoalScreen> {
                               Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                               double ispercentage = double.parse((data['amountCompleted'] / data['goalAmount']).toStringAsFixed(2));
                               int perDisplay = (ispercentage * 100).toInt();
+                              colorIndex++;
+                              if(colorIndex == 4){
+                                colorIndex = 0;
+                              }
                               return Container(
                                   width: 200,
                                   child: Column(
@@ -131,7 +144,7 @@ class _GoalScreenState extends State<GoalScreen> {
                                           height: 140,
                                           width: 350,
                                           decoration: BoxDecoration(
-                                              color: Colors.pinkAccent[100],
+                                              color: colors[colorIndex],
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(30))),
                                           child: ListTile(

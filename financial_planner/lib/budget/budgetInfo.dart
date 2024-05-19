@@ -94,7 +94,7 @@ class _BudgetInfoState extends State<BudgetInfo> {
               days = endDate.difference(today).inDays;
             }
 
-            // Calculate weeks and days 
+            // Calculate weeks and days
             int totalDaysDifference = endDate.difference(today).inDays;
             int weeks = 0;
             if (years == 0 && months == 0) {

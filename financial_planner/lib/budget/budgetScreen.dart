@@ -17,6 +17,13 @@ class BudgetScreen extends StatefulWidget {
 
 class _BudgetScreenState extends State<BudgetScreen> {
   Stream<QuerySnapshot>? _budgetStream;
+  List <Color> colors = [
+    Color(0xFFFFFFB3),
+    Color(0xFFFFCC80),
+    Color(0xFFD0FFC9),
+    Color(0xFFFFB6C1)
+  ];
+  int colorIndex = 0;
 
   @override
   void initState() {
@@ -78,6 +85,10 @@ class _BudgetScreenState extends State<BudgetScreen> {
                                   DocumentSnapshot document) {
                                 Map<String, dynamic> data =
                                 document.data()! as Map<String, dynamic>;
+                                colorIndex++;
+                                if(colorIndex == 4){
+                                  colorIndex = 0;
+                                }
                                 return Container(
                                     width: 200,
                                     child: Column(
@@ -92,7 +103,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                                             height: 150,
                                             width: 350,
                                             decoration: BoxDecoration(
-                                                color: Colors.yellowAccent[100],
+                                                color: colors[colorIndex],
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(30))),
                                             child: ListTile(
@@ -108,7 +119,8 @@ class _BudgetScreenState extends State<BudgetScreen> {
                                                   ),
                                                 ),
                                                 subtitle: Text(
-                                                    data['description'])),
+                                                    data['description'])
+                                            ),
                                           ),
                                           onTap: () {
                                             Navigator.pushAndRemoveUntil(
