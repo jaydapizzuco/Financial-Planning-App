@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/progress_bar/gf_progress_bar.dart';
 import 'package:getwidget/getwidget.dart';
+import '../notification.dart';
 import 'addGoal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'futureGoals.dart';
 import 'goalInfo.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 class GoalScreen extends StatefulWidget {
   final String? userId;
@@ -22,6 +24,7 @@ class GoalScreen extends StatefulWidget {
 class _GoalScreenState extends State<GoalScreen> {
 
   Stream<QuerySnapshot>? _goalsStream;
+  DateTime today = DateTime.now();
 
   int? dateNow;
 
@@ -38,6 +41,7 @@ class _GoalScreenState extends State<GoalScreen> {
     super.initState();
     setDateNow();
     getGoals();
+    tz.initializeTimeZones();
   }
 
   void getGoals() async {
@@ -128,10 +132,23 @@ class _GoalScreenState extends State<GoalScreen> {
                               Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                               double ispercentage = double.parse((data['amountCompleted'] / data['goalAmount']).toStringAsFixed(2));
                               int perDisplay = (ispercentage * 100).toInt();
+                              int totalDaysDifference = 0;
                               colorIndex++;
                               if(colorIndex == 4){
                                 colorIndex = 0;
                               }
+
+                              if(data['endDate'] != null) {
+                                totalDaysDifference =  data['endDate'].toDate().difference(today).inDays;
+                              }
+                              if(totalDaysDifference != null && totalDaysDifference <=31){
+                                NotificationService().showNotification(
+                                    1,
+                                    "Goal: ${data['name']}" ,
+                                    "You have $totalDaysDifference days to save \$\ ${ data['goalAmount'] - data['amountCompleted'] }"
+                                );
+                              }
+
                               return Container(
                                   width: 200,
                                   child: Column(
