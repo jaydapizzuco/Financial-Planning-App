@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../models/Goal.dart';
 import '../models/FirebaseAuthService.dart';
 import '../navigatingScreens.dart';
 import 'package:intl/intl.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:timezone/data/latest.dart' as tz;
+
+import '../notification.dart';
 
 class AddGoal extends StatefulWidget {
 
@@ -26,6 +28,12 @@ class _AddGoalState extends State<AddGoal> {
 
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    tz.initializeTimeZones();
+  }
 
   Future<void> _selectStart(BuildContext context) async{
     final DateTime? pickedDate = await showDatePicker(
@@ -140,6 +148,10 @@ class _AddGoalState extends State<AddGoal> {
                           builder: (context) =>
                               NavigatingScreen(userId: widget.userId, page: 4,)), (
                           route) => false);
+                      NotificationService().showNotification(
+                          1,
+                          _nameController.text,
+                          "Save ${double.parse(_amountController.text)} between $startDate and $endDate");
                     },
                       child: Text("Create Goal", style: TextStyle(fontSize: 20),),
                     )
