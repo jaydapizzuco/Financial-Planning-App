@@ -5,6 +5,7 @@ import 'addGoal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
+import 'futureGoals.dart';
 import 'goalInfo.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -58,7 +59,7 @@ class _GoalScreenState extends State<GoalScreen> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Goals'),
+          title: Text('Goals In Progress'),
         ),
         body: Center(
             child: Column(
@@ -71,7 +72,14 @@ class _GoalScreenState extends State<GoalScreen> {
                       //button to see future goals
                       ElevatedButton(
                           onPressed: () {
-
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        FutureGoals(
+                                          userId: widget.userId,
+                                        )),
+                                    (route) => false);
                           }, child: Text('Future goals')),
                       SizedBox(height: 10,),
                       //button to see completed goals
@@ -212,27 +220,6 @@ class _GoalScreenState extends State<GoalScreen> {
         .where('status', isEqualTo: 0)
         .where('startDate', isLessThanOrEqualTo: date)
         .snapshots();
-
-    // Stream<QuerySnapshot> goalsStartdate = await FirebaseFirestore.instance
-    //     .collection('Goals')
-    //     .where('startDate', isLessThanOrEqualTo: date)
-    //     .snapshots();
-
-    // Stream<QuerySnapshot> goals = Rx.combineLatest2(goalsUser, goalsStartdate,
-    //       (QuerySnapshot goalsUser, QuerySnapshot goalsStartdate) {
-    //     List<DocumentSnapshot> goalsUserList = goalsUser.docs;
-    //     List<DocumentSnapshot> goalsStartdateList = goalsStartdate.docs;
-    //
-    //     // Find the overlapping documents
-    //     List<DocumentSnapshot> combined = goalsUserList.where((userIdAndStatusDoc) {
-    //       return goalsStartdateList.any((startDateDoc) =>
-    //       userIdAndStatusDoc.id == startDateDoc.id); // Assuming both streams have a common identifier
-    //     }).toList();
-    //
-    //     //return QuerySnapshot(docs: overlappingDocs);
-    //
-    //   },
-    // );
 
     return goalsUser;
   }

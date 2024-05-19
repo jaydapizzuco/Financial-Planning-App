@@ -10,16 +10,22 @@ import 'login/loginScreen.dart';
 
 class NavigatingScreen extends StatefulWidget {
   final String? userId;
-  NavigatingScreen({super.key, required this.userId});
+  final int? page;
+  NavigatingScreen({super.key, required this.userId, this.page});
 
   @override
   State<NavigatingScreen> createState() => _NavigatingScreenState();
 }
 
 class _NavigatingScreenState extends State<NavigatingScreen> {
-
-
   int currentPage = 0;
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    currentPage = (widget.page != null ? widget.page : 0)!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +81,6 @@ class _NavigatingScreenState extends State<NavigatingScreen> {
           BudgetScreen(userId: widget.userId),
 
           GoalScreen(userId: widget.userId),
-
 
         ][currentPage],
       ),
