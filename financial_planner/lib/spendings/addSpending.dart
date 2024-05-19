@@ -61,7 +61,7 @@ class _AddSpendingState extends State<AddSpending> {
       appBar: AppBar(
         title: Text("New Spending"),
       ),
-      body:  Expanded(
+      body:  SingleChildScrollView(
     child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
