@@ -20,7 +20,7 @@ class _GoalInfoState extends State<GoalInfo> {
   DateTime today = DateTime.now();
   String daysLeft = "";
   num? balanceAmount;
-  String? balanaceId;
+  String? balanceId;
 
   @override
   void initState() {
@@ -38,15 +38,15 @@ class _GoalInfoState extends State<GoalInfo> {
   }
 
   void setBalance() async {
-    num? amount = await getBalanceById(widget.goalId);
+    num? amount = await getBalanceById(widget.userId);
+    String? bal = await getBalanceIdById(widget.userId);
+
     setState(() {
       balanceAmount = amount;
+      balanceId = bal;
     });
 
-    String? bal = await getBalanceIdById(widget.userId);
-    setState(() {
-      balanaceId = bal;
-    });
+
   }
 
   @override
@@ -147,7 +147,8 @@ class _GoalInfoState extends State<GoalInfo> {
                                               builder: (context) => AddIncome1(
                                                 userId: widget.userId,
                                                 balanceAmount: balanceAmount,
-                                                balanceId: balanaceId,
+                                                balanceId: balanceId,
+                                                goalId: data['id'],
                                               )),
                                               (route) => false);
                                     },

@@ -11,7 +11,8 @@ class AddIncome1 extends StatefulWidget {
   final String? userId;
   final String? balanceId;
   final num? balanceAmount;
-  AddIncome1({this.userId,this.balanceAmount,this.balanceId});
+  final String? goalId;
+  AddIncome1({this.userId,this.balanceAmount,this.balanceId,this.goalId});
 
   @override
   State<AddIncome1> createState() => _AddIncome1State();
@@ -31,9 +32,10 @@ class _AddIncome1State extends State<AddIncome1> {
 
   @override
   void initState() {
+    super.initState();
     setBalance();
     getGoals();
-    super.initState();
+    associatedGoalId = widget.goalId;
   }
 
   void setBalance() async {
