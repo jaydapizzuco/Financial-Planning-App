@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (_gainedThisMonth! >= _spentThisMonth!) {
           imageId = "ZVprbBmT8QA";
         } else {
-          imageId = "ljnEImGhvgY";
+          imageId = "dTVAqHIBV0I";
         }
       });
     }
