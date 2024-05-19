@@ -258,7 +258,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         IncomeInfo(
-                                                            id: data['id'])));
+                                                            incomeId: data['id'], userId: widget.userId,)));
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(

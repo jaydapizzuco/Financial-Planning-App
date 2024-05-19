@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import '../models/Income.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../navigatingScreens.dart';
 
 class IncomeInfo extends StatefulWidget {
-  final String id;
+  final String incomeId;
+  final String? userId;
 
-  const IncomeInfo({required this.id});
+  const IncomeInfo({required this.incomeId, required this.userId});
 
   @override
   State<IncomeInfo> createState() => _IncomeInfoState();
@@ -15,94 +17,81 @@ class IncomeInfo extends StatefulWidget {
 
 class _IncomeInfoState extends State<IncomeInfo> {
 
-  Income? income;
+  Stream<QuerySnapshot>? _income;
 
   @override
   void initState(){
     super.initState();
 
-    initializeIncome();
+    setIncome();
   }
 
-  void initializeIncome() async{
-    income = await getByID(widget.id);
+  void setIncome() async {
+    Stream<QuerySnapshot>? correctIn = await getIncomeById(widget.incomeId);
+    setState(() {
+      _income = correctIn;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: 350,
-              decoration: BoxDecoration(
-                color: Colors.yellow.withOpacity(.45),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                children: [
-                  Text('Title',style: TextStyle(fontSize: 8)),
-                  SizedBox(height: 10,),
-                  Text('${income!.title}')
-                ],
-              )
-            ),
-            SizedBox(height: 20,),
-            Container(
-              width: 350,
-              decoration: BoxDecoration(
-                color: Colors.yellow.withOpacity(.45),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                  children: [
-                  Text('Amount',style: TextStyle(fontSize: 8)),
-                SizedBox(height: 10,),
-                Text('${income!.amount}\$')
-                ],
-              )
-            ),
-            SizedBox(height: 20,),
-            Container(
-              height: 100,
-              width: 350,
-              decoration: BoxDecoration(
-                color: Colors.blue[100],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                children: [
-                  Text('Description',style: TextStyle(fontSize: 8)),
-                  SizedBox(height: 10,),
-                  Text('${income!.description}')
-                ],
-              ),
-            ),
-            SizedBox(height: 20,),
-            SizedBox(
-                height: 50,
-                width: 300,
-                child: ElevatedButton(onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ModifyIncome(income: income)));
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              StreamBuilder<QuerySnapshot>(
+                  stream: _income,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot){
+                    if (snapshot.hasError) {
+                      return Text('something went wrong');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text('Loading');
+                    }
+                    DocumentSnapshot document = snapshot.data!.docs.first;
+                    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
-                }, child: Text("Modify", style: TextStyle(fontSize: 20),),
-                )
-            ),
-            SizedBox(height: 20,),
-            SizedBox(
-                height: 50,
-                width: 300,
-                child: ElevatedButton(onPressed: () {
-                  Navigator.pop(context);
-                }, child: Text("Back to Balance", style: TextStyle(fontSize: 20),),
-                )
-            ),
-          ],
+                    return Center(
+                      child:
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(data['title'], style: TextStyle(fontSize: 24),),
+                          Text(data['description'], style: TextStyle(fontSize: 24),),
+                          Text('${data['amount']}\$', style: TextStyle(fontSize: 24),),
+                          
+                          SizedBox(height: 20,),
+                          SizedBox(
+                              height: 50,
+                              width: 300,
+                              child: ElevatedButton(onPressed: () {
+                                Navigator.pushAndRemoveUntil(
+                                    context, MaterialPageRoute(
+                                    builder: (context) =>
+                                        NavigatingScreen(userId: widget.userId)), (
+                                    route) => false);
+                              },
+                                child: Text(
+                                  "Cancel", style: TextStyle(fontSize: 20),),
+                              )
+                          ),
+                          SizedBox(height: 20,),
+                        ],
+                      )
+                      ,
+                    );
+                  }
+              )
+            ],
+          ),
         ),
-      ),
+      )
+
     );
   }
 
@@ -125,6 +114,15 @@ class _IncomeInfoState extends State<IncomeInfo> {
     }
 
     return inc;
+  }
+
+  Future<Stream<QuerySnapshot>> getIncomeById(String? id) async {
+    Stream<QuerySnapshot> income = await FirebaseFirestore.instance
+        .collection('Incomes')
+        .where('id', isEqualTo: widget.incomeId)
+        .snapshots();
+
+    return income;
   }
 
 }
