@@ -38,7 +38,8 @@ class _AddBudgetState extends State<AddBudget> {
       ),
       body: Expanded(
        // child: Center(
-        child: Column(
+        child:
+        Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

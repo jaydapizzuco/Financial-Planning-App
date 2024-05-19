@@ -59,101 +59,105 @@ class _AddGoalState extends State<AddGoal> {
       appBar: AppBar(
         title: Text("Create a New Goal"),
       ),
-      body: Expanded(
+      body: SingleChildScrollView(
         // child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: 350,
-              decoration: BoxDecoration(
-                color: Colors.yellow.withOpacity(.45),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: TextFormField(
-                controller: _nameController,
-                obscureText: false,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(labelText: 'Goal Name'),
-              ),
-            ),
-            SizedBox(height: 10,),
-            Container(
-              width: 350,
-              decoration: BoxDecoration(
-                color: Colors.yellow.withOpacity(.45),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: TextFormField(
-                controller: _amountController,
-                obscureText: false,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'Amount'),
-              ),
-            ),
-            SizedBox(height: 10,),
-            Container(
-              height: 70,
-              width: 350,
-              decoration: BoxDecoration(
-                color: Colors.blue[100],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: TextFormField(
-                controller: _descriptionController,
-                obscureText: false,
-                keyboardType: TextInputType.multiline,
-                textInputAction: TextInputAction.next,
-                maxLines: null,
-                decoration: InputDecoration(labelText: 'Description',
-                  contentPadding: EdgeInsets.symmetric(vertical: 30.0),),
-              ),
-            ),
-            SizedBox(height: 10,),
-            ElevatedButton(onPressed: (){
-              _selectStart(context);
-            }, child: Text('Start date: ${DateFormat('yyyy-MM-dd').format(startDate)}')),
-            SizedBox(height: 10,),
-            ElevatedButton(onPressed: (){
-              _selectEnd(context);
-            }, child: Text('End date: ${DateFormat('yyyy-MM-dd').format(endDate)}')),
-            SizedBox(height: 10,),
-            SizedBox(
-                height: 50,
-                width: 300,
-                child: ElevatedButton(onPressed: () {
-                  _addGoal(new Goal(
-                    userId: widget.userId,
-                    goalAmount: double.parse(_amountController.text),
-                    amountCompleted: 0,
-                    name: _nameController.text,
-                    description: _descriptionController.text,
-                    startDate: startDate,
-                    endDate: endDate,
-                    status: 0,
-                    daysReached: 0,
-                  ));
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                      builder: (context) =>
-                          NavigatingScreen(userId: widget.userId)), (
-                      route) => false);
-                },
-                  child: Text("Create Goal", style: TextStyle(fontSize: 20),),
-                )
-            ),
-            SizedBox(
-                height: 50,
-                width: 300,
-                child: ElevatedButton(onPressed: () {
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                      builder: (context) =>
-                          NavigatingScreen(userId: widget.userId)), (
-                      route) => false);
-                }, child: Text("Cancel", style: TextStyle(fontSize: 20),),
-                )
-            ),
-          ],
+        child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 10,),
+                Container(
+                  width: 350,
+                  decoration: BoxDecoration(
+                    color: Colors.yellow.withOpacity(.45),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: TextFormField(
+                    controller: _nameController,
+                    obscureText: false,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(labelText: 'Goal Name'),
+                  ),
+                ),
+                SizedBox(height: 20,),
+                Container(
+                  width: 350,
+                  decoration: BoxDecoration(
+                    color: Colors.yellow.withOpacity(.45),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: TextFormField(
+                    controller: _amountController,
+                    obscureText: false,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'Amount'),
+                  ),
+                ),
+                SizedBox(height: 20,),
+                Container(
+                  height: 70,
+                  width: 350,
+                  decoration: BoxDecoration(
+                    color: Colors.blue[100],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: TextFormField(
+                    controller: _descriptionController,
+                    obscureText: false,
+                    keyboardType: TextInputType.multiline,
+                    textInputAction: TextInputAction.next,
+                    maxLines: null,
+                    decoration: InputDecoration(labelText: 'Description',
+                      contentPadding: EdgeInsets.symmetric(vertical: 30.0),),
+                  ),
+                ),
+                SizedBox(height: 20,),
+                ElevatedButton(onPressed: (){
+                  _selectStart(context);
+                }, child: Text('Start date: ${DateFormat('yyyy-MM-dd').format(startDate)}')),
+                SizedBox(height: 20,),
+                ElevatedButton(onPressed: (){
+                  _selectEnd(context);
+                }, child: Text('End date: ${DateFormat('yyyy-MM-dd').format(endDate)}')),
+                SizedBox(height: 20,),
+                SizedBox(
+                    height: 50,
+                    width: 300,
+                    child: ElevatedButton(onPressed: () {
+                      _addGoal(new Goal(
+                        userId: widget.userId,
+                        goalAmount: double.parse(_amountController.text),
+                        amountCompleted: 0,
+                        name: _nameController.text,
+                        description: _descriptionController.text,
+                        startDate: startDate,
+                        endDate: endDate,
+                        status: 0,
+                        daysReached: 0,
+                      ));
+                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                          builder: (context) =>
+                              NavigatingScreen(userId: widget.userId)), (
+                          route) => false);
+                    },
+                      child: Text("Create Goal", style: TextStyle(fontSize: 20),),
+                    )
+                ),
+                SizedBox(height: 10,),
+                SizedBox(
+                    height: 50,
+                    width: 300,
+                    child: ElevatedButton(onPressed: () {
+                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                          builder: (context) =>
+                              NavigatingScreen(userId: widget.userId)), (
+                          route) => false);
+                    }, child: Text("Cancel", style: TextStyle(fontSize: 20),),
+                    )
+                ),
+              ],
+            )
         ),
       ),
       // ),
