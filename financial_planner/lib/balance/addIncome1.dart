@@ -25,10 +25,30 @@ class _AddIncome1State extends State<AddIncome1> {
   TextEditingController _descriptionController = TextEditingController();
 
   String? balanceId;
+  Stream<QuerySnapshot>? _goalsStream;
+  String? associatedGoalName;
+  String? associatedGoalId;
 
   @override
   void initState() {
+    setBalance();
+    getGoals();
     super.initState();
+  }
+
+  void setBalance() async {
+    String? id = await getBalanceIdById(widget.userId);
+    setState(() {
+      balanceId = id;
+    });
+  }
+
+  void getGoals() async {
+    Stream<QuerySnapshot>? _goals = await _getGoals(widget.userId);
+
+    setState(() {
+      _goalsStream = _goals;
+    });
   }
 
   @override
@@ -149,6 +169,52 @@ class _AddIncome1State extends State<AddIncome1> {
     ).toJson();
 
     incomeCollection.doc(id).set(newIncome);
+  }
+
+  Future<String?> getBalanceIdById(String? id) async {
+    String? balanceId;
+
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Balances')
+          .where('userId', isEqualTo: widget.userId)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        Balance balance = Balance.fromSnapshot(querySnapshot.docs.first);
+        balanceId = balance.id;
+      }
+    } catch (error) {
+      print('Error getting ID: $error');
+    }
+
+    return balanceId;
+  }
+
+  Future<Stream<QuerySnapshot>> _getGoals(String? id) async {
+    Stream<QuerySnapshot> goals = await FirebaseFirestore.instance
+        .collection('Goals')
+        .where('userId', isEqualTo: widget.userId)
+        .snapshots();
+
+    return goals;
+  }
+
+  void _updateGoal(String? goalId, num income) async {
+    DocumentReference budget = FirebaseFirestore.instance.collection('Goals')
+        .doc(goalId);
+    try {
+      DocumentSnapshot snapshot = await budget.get();
+      if (snapshot.exists) {
+        num currentAmountComp = snapshot['amountCompleted'];
+        num newAmountComp = currentAmountComp + income;
+        await budget.update({
+          'amountCompleted': newAmountComp,
+        });
+      }
+    } catch (e) {
+      print("Error updating document: $e");
+    }
   }
 
 //after an income has been added we need to add this amount to out balance
