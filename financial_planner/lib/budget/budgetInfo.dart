@@ -67,14 +67,16 @@ class _BudgetInfoState extends State<BudgetInfo> {
           DocumentSnapshot document = snapshot.data!.docs.first;
           Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
-          if(data['endDate'] != null) {
-            int years = data['endDate'].toDate().year - today.year;
-            int months =  data['endDate'].toDate().month - today.month;
-            int days =  data['endDate'].toDate().day - today.day;
+          if (data['endDate'] != null) {
+            DateTime endDate = data['endDate'].toDate();
+            DateTime today = DateTime.now();
+            int years = endDate.year - today.year;
+            int months = endDate.month - today.month;
+            int days = endDate.day - today.day;
 
             // if days difference is negative
             if (days < 0) {
-              final previousMonthDate = DateTime( data['endDate'].toDate().year,  data['endDate'].toDate().month, 0);
+              final previousMonthDate = DateTime(endDate.year, endDate.month, 0);
               days += previousMonthDate.day;
               months -= 1;
             }
@@ -89,32 +91,32 @@ class _BudgetInfoState extends State<BudgetInfo> {
             if (years < 0 || (years == 0 && months < 0)) {
               years = 0;
               months = 0;
-              days =  data['endDate'].toDate().difference(today).inDays;
+              days = endDate.difference(today).inDays;
             }
 
-            // If the date is in the future, calculate weeks and days
+            // Calculate weeks and days 
+            int totalDaysDifference = endDate.difference(today).inDays;
+            int weeks = 0;
             if (years == 0 && months == 0) {
-              int totalDaysDifference =  data['endDate'].toDate().difference(today).inDays;
-              int totalWeeks = totalDaysDifference ~/ 7;
-              int weeks = totalWeeks;
+              weeks = totalDaysDifference ~/ 7;
               days = totalDaysDifference % 7;
+            }
 
-              timeLeft =
-              "";
+            timeLeft = "";
 
-              if (years > 0) {
-                timeLeft += "$years ${years == 1 ? 'Year' : 'Years'} ";
-              }
-              if (months > 0) {
-                timeLeft += "$months ${months == 1 ? 'Month' : 'Months'} ";
-              }
-              if (weeks > 0) {
-                timeLeft += "$weeks ${weeks == 1 ? 'Week' : 'Weeks'} ";
-              }
-              if (days > 0) {
-                timeLeft += "$days ${days == 1 ? 'Day' : 'Days'} ";
-              }
-
+            if (years > 0) {
+              timeLeft += "$years ${years == 1 ? 'Year' : 'Years'} ";
+            }
+            if (months > 0) {
+              timeLeft += "$months ${months == 1 ? 'Month' : 'Months'} ";
+            }
+            if (weeks > 0) {
+              timeLeft += "$weeks ${weeks == 1 ? 'Week' : 'Weeks'} ";
+            }
+            if (days > 0) {
+              timeLeft += "$days ${days == 1 ? 'Day' : 'Days'} ";
+            }
+            if (timeLeft.isNotEmpty) {
               timeLeft += "Until Budget Resets";
             }
           }
@@ -204,7 +206,7 @@ class _BudgetInfoState extends State<BudgetInfo> {
                           Navigator.pushAndRemoveUntil(
                               context, MaterialPageRoute(
                               builder: (context) =>
-                                  NavigatingScreen(userId: widget.userId)), (
+                                  NavigatingScreen(userId: widget.userId,page: 3,)), (
                               route) => false);
                         },
                           child: Text(

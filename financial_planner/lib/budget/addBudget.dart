@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import '../models/Budget.dart';
 import '../models/FirebaseAuthService.dart';
 import '../navigatingScreens.dart';
+import '../notification.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 class AddBudget extends StatefulWidget {
   final String? userId;
@@ -29,6 +30,12 @@ class _AddBudgetState extends State<AddBudget> {
     'Weeks',
     'Months',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    tz.initializeTimeZones();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +149,10 @@ class _AddBudgetState extends State<AddBudget> {
                       builder: (context) =>
                           NavigatingScreen(userId: widget.userId, page :3)), (
                       route) => false);
+                NotificationService().showNotification(
+                1,
+                _nameController.text,
+                "${double.parse(_amountController.text)} remaining for the next ${int.parse(_timePeriodController.text)} $unitOfTime");
                 },
                   child: Text("Create Budget", style: TextStyle(fontSize: 20),),
                 )
