@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import '../notification.dart';
 import 'addBudget.dart';
 import 'budgetInfo.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 class BudgetScreen extends StatefulWidget {
   final String? userId;
@@ -29,6 +29,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
   void initState() {
     super.initState();
     getBudgets();
+    tz.initializeTimeZones();
   }
 
   void getBudgets() async {
@@ -89,6 +90,17 @@ class _BudgetScreenState extends State<BudgetScreen> {
                                 if(colorIndex == 4){
                                   colorIndex = 0;
                                 }
+                                double remaining = data['amount'] -
+                                    data['amountUsed'];
+
+                                if(remaining != null && remaining <=100){
+                                  NotificationService().showNotification(
+                                      1,
+                                      "Budget: ${data['name']}" ,
+                                      " \$\ ${remaining} remaining until ${data['endDate'].toDate()} "
+                                  );
+                                }
+
                                 return Container(
                                     width: 200,
                                     child: Column(
@@ -110,8 +122,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                                                 title: Text(
                                                   data['name'] +
                                                       "\n\$\ " +
-                                                      (data['amount'] -
-                                                          data['amountUsed'])
+                                                      (remaining)
                                                           .toString() +
                                                       " remaining",
                                                   style: TextStyle(
