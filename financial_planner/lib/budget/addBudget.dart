@@ -140,7 +140,7 @@ class _AddBudgetState extends State<AddBudget> {
                   ));
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                       builder: (context) =>
-                          NavigatingScreen(userId: widget.userId)), (
+                          NavigatingScreen(userId: widget.userId, page :3)), (
                       route) => false);
                 },
                   child: Text("Create Budget", style: TextStyle(fontSize: 20),),
@@ -152,7 +152,7 @@ class _AddBudgetState extends State<AddBudget> {
                 child: ElevatedButton(onPressed: () {
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                       builder: (context) =>
-                          NavigatingScreen(userId: widget.userId)), (
+                          NavigatingScreen(userId: widget.userId, page:3)), (
                       route) => false);
                 }, child: Text("Cancel", style: TextStyle(fontSize: 20),),
                 )

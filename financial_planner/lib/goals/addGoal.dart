@@ -138,7 +138,7 @@ class _AddGoalState extends State<AddGoal> {
                       ));
                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                           builder: (context) =>
-                              NavigatingScreen(userId: widget.userId)), (
+                              NavigatingScreen(userId: widget.userId, page: 4,)), (
                           route) => false);
                     },
                       child: Text("Create Goal", style: TextStyle(fontSize: 20),),
@@ -151,7 +151,7 @@ class _AddGoalState extends State<AddGoal> {
                     child: ElevatedButton(onPressed: () {
                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                           builder: (context) =>
-                              NavigatingScreen(userId: widget.userId)), (
+                              NavigatingScreen(userId: widget.userId, page: 4)), (
                           route) => false);
                     }, child: Text("Cancel", style: TextStyle(fontSize: 20),),
                     )

@@ -175,7 +175,7 @@ class _AddSpendingState extends State<AddSpending> {
                   _updateBudget(associatedBudgetId,double.parse(_amountController.text));
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                       builder: (context) =>
-                          NavigatingScreen(userId: widget.userId)), (
+                          NavigatingScreen(userId: widget.userId, page: 2,)), (
                       route) => false);
                 }, child: Text("Add Spending", style: TextStyle(fontSize: 20),),
                 )
@@ -187,7 +187,7 @@ class _AddSpendingState extends State<AddSpending> {
                 child: ElevatedButton(onPressed: () {
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                       builder: (context) =>
-                          NavigatingScreen(userId: widget.userId)), (
+                          NavigatingScreen(userId: widget.userId, page:2)), (
                       route) => false);
                 }, child: Text("Cancel", style: TextStyle(fontSize: 20),),
                 )

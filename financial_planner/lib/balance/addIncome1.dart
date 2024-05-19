@@ -170,7 +170,7 @@ class _AddIncome1State extends State<AddIncome1> {
                     _updateGoal(associatedGoalId,double.parse(_amountController.text));
                     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                         builder: (context) =>
-                            NavigatingScreen(userId: widget.userId)), (
+                            NavigatingScreen(userId: widget.userId, page: 1,)), (
                         route) => false);
                   }, child: Text("Add Income", style: TextStyle(fontSize: 20),),
                   )
@@ -182,7 +182,7 @@ class _AddIncome1State extends State<AddIncome1> {
                   child: ElevatedButton(onPressed: () {
                     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                         builder: (context) =>
-                            NavigatingScreen(userId: widget.userId)), (
+                            NavigatingScreen(userId: widget.userId, page: 1,)), (
                         route) => false);
                   }, child: Text("Cancel", style: TextStyle(fontSize: 20),),
                   )
