@@ -6,6 +6,7 @@ import 'addGoal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
+import 'futureGoalInfo.dart';
 import 'goalInfo.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -151,7 +152,7 @@ class _FutureGoalsState extends State<FutureGoals> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        GoalInfo(
+                                                        FutureGoalInfo(
                                                           userId: widget.userId,
                                                           goalId: data['id'],)),
                                                     (route) => false);
