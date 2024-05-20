@@ -1,3 +1,4 @@
+import 'package:financial_planner/goals/completedGoals.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/progress_bar/gf_progress_bar.dart';
 import 'package:getwidget/getwidget.dart';
@@ -97,7 +98,14 @@ class _GoalScreenState extends State<GoalScreen> {
                       //button to see completed goals
                       ElevatedButton(
                           onPressed: () {
-
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CompletedGoals(
+                                          userId: widget.userId,
+                                        )),
+                                    (route) => false);
                           }, child: Text('Completed goals')),
                       SizedBox(height: 10,),
                       //button to see failed goals

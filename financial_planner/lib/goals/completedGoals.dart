@@ -84,6 +84,7 @@ class _CompletedGoalsState extends State<CompletedGoals> {
                           }, child: Text('Goals In Progress')),
                     ],
                   ),
+                  SizedBox(height: 20,),
                   StreamBuilder<QuerySnapshot>(
                       stream: _goalsStream,
                       builder: (BuildContext context,
@@ -106,8 +107,6 @@ class _CompletedGoalsState extends State<CompletedGoals> {
                               shrinkWrap: true,
                               children: snapshot.data!.docs.map((DocumentSnapshot document){
                                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                                double ispercentage = double.parse((data['amountCompleted'] / data['goalAmount']).toStringAsFixed(2));
-                                int perDisplay = (ispercentage * 100).toInt();
                                 return Container(
                                     width: 200,
                                     child: Column(
@@ -127,19 +126,19 @@ class _CompletedGoalsState extends State<CompletedGoals> {
                                                 title: Text(
                                                   data['name'] +
                                                       "\n\$\ " +
-                                                      (data['goalAmount']),
+                                                      (data['goalAmount']).toString(),
                                                   style: TextStyle(
                                                     fontSize: 28,
                                                   ),
                                                 ),
                                                 subtitle: GFProgressBar(
-                                                  percentage: ispercentage,
+                                                  percentage: 1,
                                                   backgroundColor : Colors.black,
                                                   progressBarColor: Colors.green,
                                                   lineHeight: 25,
                                                   child: Padding(
                                                     padding: EdgeInsets.only(right: 5),
-                                                    child: Text('${perDisplay}%', textAlign: TextAlign.end,
+                                                    child: Text('100%', textAlign: TextAlign.end,
                                                       style: TextStyle(fontSize: 17, color: Colors.white),
                                                     ),
                                                   ),
