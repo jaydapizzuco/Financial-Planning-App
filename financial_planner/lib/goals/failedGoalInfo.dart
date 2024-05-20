@@ -6,16 +6,16 @@ import '../navigatingScreens.dart';
 import '../balance/addIncome1.dart';
 import '../models/Balance.dart';
 
-class GoalInfo extends StatefulWidget {
+class FailedGoalInfo extends StatefulWidget {
   final String? userId;
   final String? goalId;
-  const GoalInfo({required this.userId, required this.goalId});
+  const FailedGoalInfo({required this.userId, required this.goalId});
 
   @override
-  State<GoalInfo> createState() => _GoalInfoState();
+  State<FailedGoalInfo> createState() => _FailedGoalInfoState();
 }
 
-class _GoalInfoState extends State<GoalInfo> {
+class _FailedGoalInfoState extends State<FailedGoalInfo> {
   Stream<QuerySnapshot>? _goal;
   DateTime today = DateTime.now();
   String daysLeft = "";
@@ -52,10 +52,10 @@ class _GoalInfoState extends State<GoalInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Goal'),
-        backgroundColor: Colors.purple[100],
-      ),
+        appBar: AppBar(
+          title: Text('Failed Goal'),
+          backgroundColor: Colors.purple[100],
+        ),
         body: SingleChildScrollView(
           child: Center(
             //child: SingleChildScrollView(
@@ -136,34 +136,6 @@ class _GoalInfoState extends State<GoalInfo> {
                                       legendPosition: LegendPosition.bottom,
                                       legendTextStyle: TextStyle(fontSize: 20)
                                   ),
-                                ),
-                                Text("${totalDaysDifference} days until the goal end", style: TextStyle(fontSize: 24),),
-                                SizedBox(height: 20,),
-                                SizedBox(
-                                    height: 50,
-                                    width: 300,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5), // <-- Radius
-                                          ),
-                                          backgroundColor: Colors.green[300]
-                                      ),
-                                      onPressed: () {
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => AddIncome1(
-                                                userId: widget.userId,
-                                                balanceAmount: balanceAmount,
-                                                balanceId: balanceId,
-                                                goalId: data['id'],
-                                              )),
-                                              (route) => false);
-                                    },
-                                      child: Text(
-                                        "Add Income", style: TextStyle(fontSize: 20, color: Colors.white),),
-                                    )
                                 ),
                                 SizedBox(height: 20,),
                                 SizedBox(
