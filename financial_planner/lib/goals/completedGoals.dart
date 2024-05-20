@@ -1,3 +1,4 @@
+import 'package:financial_planner/goals/completedGoalInfo.dart';
 import 'package:financial_planner/navigatingScreens.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/progress_bar/gf_progress_bar.dart';
@@ -149,7 +150,7 @@ class _CompletedGoalsState extends State<CompletedGoals> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        FutureGoalInfo(
+                                                        CompletedGoalInfo(
                                                           userId: widget.userId,
                                                           goalId: data['id'],)),
                                                     (route) => false);
