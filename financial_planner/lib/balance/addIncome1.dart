@@ -259,6 +259,13 @@ class _AddIncome1State extends State<AddIncome1> {
           await budget.update({
             'status': 1,
           });
+
+          DateTime date = DateTime.now();
+          DateTime startdate = snapshot2['startDate'].toDate();
+          int daysAchieved =  date.difference(startdate).inDays;
+          await budget.update({
+            'daysReached': daysAchieved,
+          });
         }
       }
     } catch (e) {
