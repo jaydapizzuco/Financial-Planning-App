@@ -67,9 +67,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: Text('Profile'),
           backgroundColor: Colors.purple[100],
         ),
+        body: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.person, size: 130,),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text('$username', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                          ElevatedButton(
+                              onPressed: (){
+
+                              },
+                              child: Icon(Icons.edit))
+                        ],
+                      ),
+
+                      Row(
+                        children: [
+                          Text('$email', style: TextStyle(fontSize: 15),),
+                          ElevatedButton(
+                              onPressed: (){
+
+                              },
+                              child: Icon(Icons.edit))
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+
+              ElevatedButton(
+                  onPressed: (){
+
+                  },
+                  child: Text('Change password'))
+            ],
+          ),
+        ),
       );
     }else{
-      return Scaffold();
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
     }
   }
 
