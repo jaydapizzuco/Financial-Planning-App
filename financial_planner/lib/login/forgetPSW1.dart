@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/FirebaseAuthService.dart';
 import 'forgetPSW2.dart';
+import 'loginScreen.dart';
 
 class ForgetPSW1 extends StatefulWidget {
   const ForgetPSW1({super.key});
@@ -60,6 +61,15 @@ class _ForgetPSW1State extends State<ForgetPSW1> {
           child : ElevatedButton(onPressed: (){
             sendPasswordResetEmail();
           }, child: Text("Send Email", style: TextStyle(fontSize: 20),),
+          )
+      ),
+      SizedBox(height: 10),
+      SizedBox(
+          width: 350,
+          child : ElevatedButton(onPressed: (){
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginScreen()),
+              (route) => false);
+          }, child: Text("Cancel", style: TextStyle(fontSize: 20),),
           )
       ),
     ],

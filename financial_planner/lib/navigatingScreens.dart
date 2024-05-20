@@ -39,7 +39,7 @@ class _NavigatingScreenState extends State<NavigatingScreen> {
               currentPage = index;
             });
           },
-          indicatorColor: Colors.amber,
+          indicatorColor: Colors.purple[100],
           selectedIndex: currentPage,
           destinations: const <Widget>[
             NavigationDestination(

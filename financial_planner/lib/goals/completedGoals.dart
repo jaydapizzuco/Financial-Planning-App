@@ -82,7 +82,7 @@ class _CompletedGoalsState extends State<CompletedGoals> {
                                           page: 4,)),
                                     (route) => false);
 
-                          }, child: Text('Completed Goals')),
+                          }, child: Text('Goals In Progress')),
                     ],
                   ),
                   SizedBox(height: 20,),

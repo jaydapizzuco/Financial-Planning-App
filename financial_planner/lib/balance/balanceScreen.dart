@@ -186,28 +186,6 @@ class _BalanceScreenState extends State<BalanceScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                      height: 50,
-                      width: 350,
-                      decoration: BoxDecoration(
-                          color: Colors.blue[100],
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Monthly average: x",
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.blueGrey,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      )),
-                  SizedBox(
-                    height: 10,
-                  ),
                   Text(
                     "Incomes",
                     style: TextStyle(fontSize: 24),

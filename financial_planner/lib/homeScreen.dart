@@ -23,6 +23,7 @@ HomeScreen({this.userId});
 class _HomeScreenState extends State<HomeScreen> {
   String? username;
   String?  imageId;
+  String? savingStatus;
   num? _gainedThisMonth;
   num? _spentThisMonth;
   bool isLoading = true;
@@ -80,8 +81,10 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         if (_gainedThisMonth! >= _spentThisMonth!) {
           imageId = "ZVprbBmT8QA";
+          savingStatus = "Great job saving! Keep it up!";
         } else {
           imageId = "dTVAqHIBV0I";
+          savingStatus = "Time to reel in your spending You can do it!";
         }
       });
     }
@@ -116,14 +119,14 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Center(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("HomePage",
-                    style: TextStyle(
-                        fontSize: 30, fontWeight: FontWeight.bold),),
                   Text("Welcome Back ${username}",
                     style: TextStyle(
-                        fontSize: 30, fontWeight: FontWeight.bold),),
-
+                        fontSize: 28, fontWeight: FontWeight.bold),),
+                  Text("${savingStatus}",
+                    style: TextStyle(
+                        fontSize: 30,)),
                   FutureBuilder<Map<String, dynamic>>(
                       future: fetchImageDetails(imageId!),
                       builder: (context, snapshot) {
