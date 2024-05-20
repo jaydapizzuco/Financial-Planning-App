@@ -39,18 +39,20 @@ class _AddBudgetState extends State<AddBudget> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Create a New Budget"),
         backgroundColor: Colors.purple[100],
       ),
-      body: Expanded(
+      body: SingleChildScrollView(
        // child: Center(
         child:
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: 30,),
             Container(
               width: 350,
               decoration: BoxDecoration(
@@ -64,7 +66,7 @@ class _AddBudgetState extends State<AddBudget> {
                 decoration: InputDecoration(labelText: 'Budget Name'),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 20,),
             Container(
               width: 350,
               decoration: BoxDecoration(
@@ -78,7 +80,7 @@ class _AddBudgetState extends State<AddBudget> {
                 decoration: InputDecoration(labelText: 'Amount'),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 20,),
             Container(
               height: 70,
               width: 350,
@@ -96,7 +98,7 @@ class _AddBudgetState extends State<AddBudget> {
                   contentPadding: EdgeInsets.symmetric(vertical: 30.0),),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 30,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -132,7 +134,7 @@ class _AddBudgetState extends State<AddBudget> {
             )
             ],
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 20,),
             SizedBox(
                 height: 50,
                 width: 300,
@@ -165,6 +167,7 @@ class _AddBudgetState extends State<AddBudget> {
                   child: Text("Create Budget", style: TextStyle(fontSize: 20, color: Colors.white),),
                 )
             ),
+            SizedBox(height: 10,),
             SizedBox(
                 height: 50,
                 width: 300,

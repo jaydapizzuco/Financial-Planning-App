@@ -73,7 +73,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading || username == null || email ==  null || _balance == null || completedGoals == null || failedGoals == null) {
+    if (username == null || email ==  null || _balance == null /*|| completedGoals == null || failedGoals == null*/) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }else{
+
       return Scaffold(
         appBar: AppBar(
           title: Text('Profile'),
@@ -183,38 +190,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           );
                       }),
                   SizedBox(height: 50,),
-                  Container(
-                    height: 40,
-                    width: 290,
-                    decoration: BoxDecoration(
-                        color: Colors.green[100],
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(20))),
-                    child: Center(child: Text('Completed goals: $completedGoals',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18),),),
-                  ),
-                  SizedBox(height: 10,),
-                  Container(
-                    height: 40,
-                    width: 290,
-                    decoration: BoxDecoration(
-                        color: Colors.red[100],
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(20))),
-                    child: Center(child: Text('Failed goals: $failedGoals',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18),),),
-                  ),
+                  // Container(
+                  //   height: 40,
+                  //   width: 290,
+                  //   decoration: BoxDecoration(
+                  //       color: Colors.green[100],
+                  //       borderRadius: BorderRadius.all(
+                  //           Radius.circular(20))),
+                  //   child: Center(child: Text('Completed goals: $completedGoals',
+                  //     textAlign: TextAlign.center,
+                  //     style: TextStyle(fontSize: 18),),),
+                  // ),
+                  // SizedBox(height: 10,),
+                  // Container(
+                  //   height: 40,
+                  //   width: 290,
+                  //   decoration: BoxDecoration(
+                  //       color: Colors.red[100],
+                  //       borderRadius: BorderRadius.all(
+                  //           Radius.circular(20))),
+                  //   child: Center(child: Text('Failed goals: $failedGoals',
+                  //     textAlign: TextAlign.center,
+                  //     style: TextStyle(fontSize: 18),),),
+                  // ),
                 ],
               ),
             )
-        ),
-      );
-    }else{
-      return Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
         ),
       );
     }

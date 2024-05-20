@@ -47,97 +47,104 @@ class _BudgetInfoState extends State<BudgetInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Goal"),
-          backgroundColor: Colors.purple[100],
+    if(_budget == null || balanceAmount == null || today == null){
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
         ),
-        body: SingleChildScrollView(
-            child: Center(
-              //child: SingleChildScrollView(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      StreamBuilder<QuerySnapshot>(
-                          stream: _budget,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<QuerySnapshot> snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('something went wrong');
-                            }
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return CircularProgressIndicator();
-                            }
-                            DocumentSnapshot document = snapshot.data!.docs.first;
-                            Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+      );
+    }else{
+      return Scaffold(
+          appBar: AppBar(
+            title: Text("Budget"),
+            backgroundColor: Colors.purple[100],
+          ),
+          body: SingleChildScrollView(
+              child: Center(
+                //child: SingleChildScrollView(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        StreamBuilder<QuerySnapshot>(
+                            stream: _budget,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('something went wrong');
+                              }
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              }
+                              DocumentSnapshot document = snapshot.data!.docs.first;
+                              Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
-                            if (data['endDate'] != null) {
-                              DateTime endDate = data['endDate'].toDate();
-                              DateTime today = DateTime.now();
-                              int years = endDate.year - today.year;
-                              int months = endDate.month - today.month;
-                              int days = endDate.day - today.day;
+                              if (data['endDate'] != null) {
+                                DateTime endDate = data['endDate'].toDate();
+                                DateTime today = DateTime.now();
+                                int years = endDate.year - today.year;
+                                int months = endDate.month - today.month;
+                                int days = endDate.day - today.day;
 
-                              // if days difference is negative
-                              if (days < 0) {
-                                final previousMonthDate = DateTime(endDate.year, endDate.month, 0);
-                                days += previousMonthDate.day;
-                                months -= 1;
+                                // if days difference is negative
+                                if (days < 0) {
+                                  final previousMonthDate = DateTime(endDate.year, endDate.month, 0);
+                                  days += previousMonthDate.day;
+                                  months -= 1;
+                                }
+
+                                // if months difference is negative
+                                if (months < 0) {
+                                  months += 12;
+                                  years -= 1;
+                                }
+
+                                // past dates
+                                if (years < 0 || (years == 0 && months < 0)) {
+                                  years = 0;
+                                  months = 0;
+                                  days = endDate.difference(today).inDays;
+                                }
+
+                                // Calculate weeks and days
+                                int totalDaysDifference = endDate.difference(today).inDays;
+                                int weeks = 0;
+                                if (years == 0 && months == 0) {
+                                  weeks = totalDaysDifference ~/ 7;
+                                  days = totalDaysDifference % 7;
+                                }
+
+                                timeLeft = "";
+
+                                if (years > 0) {
+                                  timeLeft += "$years ${years == 1 ? 'Year' : 'Years'} ";
+                                }
+                                if (months > 0) {
+                                  timeLeft += "$months ${months == 1 ? 'Month' : 'Months'} ";
+                                }
+                                if (weeks > 0) {
+                                  timeLeft += "$weeks ${weeks == 1 ? 'Week' : 'Weeks'} ";
+                                }
+                                if (days > 0) {
+                                  timeLeft += "$days ${days == 1 ? 'Day' : 'Days'} ";
+                                }
+                                if (timeLeft.isNotEmpty) {
+                                  timeLeft += "Until Budget Resets";
+                                }
                               }
 
-                              // if months difference is negative
-                              if (months < 0) {
-                                months += 12;
-                                years -= 1;
-                              }
+                              Map<String,double> dataMap = {
+                                'Remaining' : (data['amount'] - data['amountUsed']) as double,
+                                'Used' : data['amountUsed'] as double,
 
-                              // past dates
-                              if (years < 0 || (years == 0 && months < 0)) {
-                                years = 0;
-                                months = 0;
-                                days = endDate.difference(today).inDays;
-                              }
+                              } as Map<String, double>;
 
-                              // Calculate weeks and days
-                              int totalDaysDifference = endDate.difference(today).inDays;
-                              int weeks = 0;
-                              if (years == 0 && months == 0) {
-                                weeks = totalDaysDifference ~/ 7;
-                                days = totalDaysDifference % 7;
-                              }
+                              List<Color> colors = [
+                                Color(0xFFB2FF59),
+                                Color(0xFFEF5350),
+                              ];
 
-                              timeLeft = "";
-
-                              if (years > 0) {
-                                timeLeft += "$years ${years == 1 ? 'Year' : 'Years'} ";
-                              }
-                              if (months > 0) {
-                                timeLeft += "$months ${months == 1 ? 'Month' : 'Months'} ";
-                              }
-                              if (weeks > 0) {
-                                timeLeft += "$weeks ${weeks == 1 ? 'Week' : 'Weeks'} ";
-                              }
-                              if (days > 0) {
-                                timeLeft += "$days ${days == 1 ? 'Day' : 'Days'} ";
-                              }
-                              if (timeLeft.isNotEmpty) {
-                                timeLeft += "Until Budget Resets";
-                              }
-                            }
-
-                            Map<String,double> dataMap = {
-                              'Remaining' : (data['amount'] - data['amountUsed']) as double,
-                              'Used' : data['amountUsed'] as double,
-
-                            } as Map<String, double>;
-
-                            List<Color> colors = [
-                              Color(0xFFB2FF59),
-                              Color(0xFFEF5350),
-                            ];
-
-                            return Center(
+                              return Center(
                                   child:
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -235,12 +242,12 @@ class _BudgetInfoState extends State<BudgetInfo> {
                                       SizedBox(height: 30,)
                                     ],
                                   )
-                            );
-                          })
-                    ]))
-        )
-    );
-
+                              );
+                            })
+                      ]))
+          )
+      );
+    }
   }
 
 
