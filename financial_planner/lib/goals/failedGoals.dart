@@ -108,6 +108,9 @@ class _FailedGoalsState extends State<FailedGoals> {
                               shrinkWrap: true,
                               children: snapshot.data!.docs.map((DocumentSnapshot document){
                                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+
+                                double ispercentage = double.parse((data['amountCompleted'] / data['goalAmount']).toStringAsFixed(2));
+                                int perDisplay = (ispercentage * 100).toInt();
                                 return Container(
                                     width: 200,
                                     child: Column(
@@ -120,7 +123,7 @@ class _FailedGoalsState extends State<FailedGoals> {
                                             height: 140,
                                             width: 350,
                                             decoration: BoxDecoration(
-                                                color: Colors.redAccent[300],
+                                                color: Colors.red[300],
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(30))),
                                             child: ListTile(
@@ -129,9 +132,21 @@ class _FailedGoalsState extends State<FailedGoals> {
                                                       "\n\$\ " +
                                                       (data['goalAmount']).toString(),
                                                   style: TextStyle(
-                                                    fontSize: 28,
+                                                    fontSize: 28, color: Colors.white
                                                   ),
                                                 ),
+                                                subtitle: GFProgressBar(
+                                                  percentage: ispercentage,
+                                                  backgroundColor : Colors.black,
+                                                  progressBarColor: Colors.green,
+                                                  lineHeight: 25,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(right: 5),
+                                                    child: Text('${perDisplay}%', textAlign: TextAlign.end,
+                                                      style: TextStyle(fontSize: 17, color: Colors.white),
+                                                    ),
+                                                  ),
+                                                )
                                             ),),
                                           onTap: () {
                                             Navigator.pushAndRemoveUntil(
