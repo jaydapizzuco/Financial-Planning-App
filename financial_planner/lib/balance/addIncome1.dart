@@ -254,6 +254,12 @@ class _AddIncome1State extends State<AddIncome1> {
         await budget.update({
           'amountCompleted': newAmountComp,
         });
+        DocumentSnapshot snapshot2 = await budget.get();
+        if(snapshot2['amountCompleted'] >= snapshot2['goalAmount']){
+          await budget.update({
+            'status': 1,
+          });
+        }
       }
     } catch (e) {
       print("Error updating document: $e");

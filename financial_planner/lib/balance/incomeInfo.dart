@@ -64,7 +64,7 @@ class _IncomeInfoState extends State<IncomeInfo> {
                           Text(data['title'], style: TextStyle(fontSize: 24),),
                           Text(data['description'], style: TextStyle(fontSize: 24),),
                           Text('${data['amount']}\$', style: TextStyle(fontSize: 24),),
-                          
+
                           SizedBox(height: 20,),
                           SizedBox(
                               height: 50,
