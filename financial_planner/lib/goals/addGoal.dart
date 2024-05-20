@@ -37,6 +37,7 @@ class _AddGoalState extends State<AddGoal> {
 
   Future<void> _selectStart(BuildContext context) async{
     final DateTime? pickedDate = await showDatePicker(
+
         context: context,
         initialDate: startDate,
         firstDate: startDate,
@@ -122,13 +123,27 @@ class _AddGoalState extends State<AddGoal> {
                   ),
                 ),
                 SizedBox(height: 20,),
-                ElevatedButton(onPressed: (){
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5), // <-- Radius
+                        ),
+                        backgroundColor: Colors.amber
+                    ),
+                    onPressed: (){
                   _selectStart(context);
-                }, child: Text('Start date: ${DateFormat('yyyy-MM-dd').format(startDate)}')),
+                }, child: Text('Start date: ${DateFormat('yyyy-MM-dd').format(startDate)}', style: TextStyle(color: Colors.white),)),
                 SizedBox(height: 20,),
-                ElevatedButton(onPressed: (){
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5), // <-- Radius
+                        ),
+                        backgroundColor: Colors.amber
+                    ),
+                    onPressed: (){
                   _selectEnd(context);
-                }, child: Text('End date: ${DateFormat('yyyy-MM-dd').format(endDate)}')),
+                }, child: Text('End date: ${DateFormat('yyyy-MM-dd').format(endDate)}', style: TextStyle(color: Colors.white))),
                 SizedBox(height: 20,),
                 SizedBox(
                     height: 50,
