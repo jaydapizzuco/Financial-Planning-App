@@ -86,42 +86,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Row(
                     children: [
+                      Spacer(),
                       Icon(Icons.person, size: 130,),
                       Column(
                         children: [
-                          Row(
-                            children: [
-                              Text('$username', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
-                              ElevatedButton(
-                                  onPressed: (){
-
-                                  },
-                                  child: Icon(Icons.edit))
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Text('$email', style: TextStyle(fontSize: 15),),
-                              ElevatedButton(
-                                  onPressed: (){
-
-                                  },
-                                  child: Icon(Icons.edit))
-                            ],
-                          ),
+                          Text('$username', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                          Text('$email', style: TextStyle(fontSize: 15),),
                         ],
-                      )
+                      ),
+                      Spacer()
                     ],
                   ),
 
                   ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5), // <-- Radius
+                          ),
+                          backgroundColor: Colors.purple[100]
+                      ),
                       onPressed: (){
                         FirebaseAuth.instance.signOut();
                         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => updatePSW(userId: widget.userId)),
                                 (route) => false);
                       },
-                      child: Text('Change password')),
+                      child: Text('Change password',style: TextStyle(color: Colors.black87),)),
                   SizedBox(height: 20,),
 
                   StreamBuilder<QuerySnapshot>(

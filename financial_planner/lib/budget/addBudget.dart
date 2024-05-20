@@ -136,7 +136,14 @@ class _AddBudgetState extends State<AddBudget> {
             SizedBox(
                 height: 50,
                 width: 300,
-                child: ElevatedButton(onPressed: () {
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5), // <-- Radius
+                      ),
+                      backgroundColor: Colors.green[300]
+                  ),
+                  onPressed: () {
                   _addBudget(new Budget(
                     userId: widget.userId,
                     amount: double.parse(_amountController.text),
@@ -155,18 +162,25 @@ class _AddBudgetState extends State<AddBudget> {
                 _nameController.text,
                 "${double.parse(_amountController.text)} remaining for the next ${int.parse(_timePeriodController.text)} $unitOfTime");
                 },
-                  child: Text("Create Budget", style: TextStyle(fontSize: 20),),
+                  child: Text("Create Budget", style: TextStyle(fontSize: 20, color: Colors.white),),
                 )
             ),
             SizedBox(
                 height: 50,
                 width: 300,
-                child: ElevatedButton(onPressed: () {
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5), // <-- Radius
+                      ),
+                      backgroundColor: Colors.red[300]
+                  ),
+                  onPressed: () {
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                       builder: (context) =>
                           NavigatingScreen(userId: widget.userId, page:3)), (
                       route) => false);
-                }, child: Text("Cancel", style: TextStyle(fontSize: 20),),
+                }, child: Text("Cancel", style: TextStyle(fontSize: 20, color: Colors.white),),
                 )
             ),
           ],

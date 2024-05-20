@@ -134,7 +134,14 @@ class _CompletedGoalInfoState extends State<CompletedGoalInfo> {
                                 SizedBox(
                                     height: 50,
                                     width: 300,
-                                    child: ElevatedButton(onPressed: () {
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5), // <-- Radius
+                                          ),
+                                          backgroundColor: Colors.red[300]
+                                      ),
+                                      onPressed: () {
                                       Navigator.pushAndRemoveUntil(
                                           context, MaterialPageRoute(
                                           builder: (context) =>
@@ -142,7 +149,7 @@ class _CompletedGoalInfoState extends State<CompletedGoalInfo> {
                                           route) => false);
                                     },
                                       child: Text(
-                                        "Cancel", style: TextStyle(fontSize: 20),),
+                                        "Cancel", style: TextStyle(fontSize: 20, color: Colors.white),),
                                     )
                                 ),
                                 SizedBox(height: 20,),

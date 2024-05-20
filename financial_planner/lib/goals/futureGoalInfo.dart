@@ -143,7 +143,14 @@ class _FutureGoalInfoState extends State<FutureGoalInfo> {
                                 SizedBox(
                                     height: 50,
                                     width: 300,
-                                    child: ElevatedButton(onPressed: () {
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5), // <-- Radius
+                                          ),
+                                          backgroundColor: Colors.green[300]
+                                      ),
+                                      onPressed: () {
                                       _updateGoal(data['id'],today);
                                       Navigator.pushAndRemoveUntil(
                                           context,
@@ -155,14 +162,21 @@ class _FutureGoalInfoState extends State<FutureGoalInfo> {
                                               (route) => false);
                                     },
                                       child: Text(
-                                        "Start Now", style: TextStyle(fontSize: 20),),
+                                        "Start Now", style: TextStyle(fontSize: 20, color: Colors.white),),
                                     )
                                 ),
                                 SizedBox(height: 20,),
                                 SizedBox(
                                     height: 50,
                                     width: 300,
-                                    child: ElevatedButton(onPressed: () {
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5), // <-- Radius
+                                          ),
+                                          backgroundColor: Colors.red[300]
+                                      ),
+                                      onPressed: () {
                                       Navigator.pushAndRemoveUntil(
                                           context, MaterialPageRoute(
                                           builder: (context) =>
@@ -170,7 +184,7 @@ class _FutureGoalInfoState extends State<FutureGoalInfo> {
                                           route) => false);
                                     },
                                       child: Text(
-                                        "Cancel", style: TextStyle(fontSize: 20),),
+                                        "Cancel", style: TextStyle(fontSize: 20, color: Colors.white),),
                                     )
                                 ),
                                 SizedBox(height: 20,),

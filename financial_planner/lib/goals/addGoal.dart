@@ -133,7 +133,14 @@ class _AddGoalState extends State<AddGoal> {
                 SizedBox(
                     height: 50,
                     width: 300,
-                    child: ElevatedButton(onPressed: () {
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5), // <-- Radius
+                          ),
+                          backgroundColor: Colors.green[300]
+                      ),
+                      onPressed: () {
                       _addGoal(new Goal(
                         userId: widget.userId,
                         goalAmount: double.parse(_amountController.text),
@@ -154,19 +161,26 @@ class _AddGoalState extends State<AddGoal> {
                           _nameController.text,
                           "Save ${double.parse(_amountController.text)} between $startDate and $endDate");
                     },
-                      child: Text("Create Goal", style: TextStyle(fontSize: 20),),
+                      child: Text("Create Goal", style: TextStyle(fontSize: 20, color: Colors.white),),
                     )
                 ),
                 SizedBox(height: 10,),
                 SizedBox(
                     height: 50,
                     width: 300,
-                    child: ElevatedButton(onPressed: () {
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5), // <-- Radius
+                          ),
+                          backgroundColor: Colors.red[300]
+                      ),
+                      onPressed: () {
                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                           builder: (context) =>
                               NavigatingScreen(userId: widget.userId, page: 4)), (
                           route) => false);
-                    }, child: Text("Cancel", style: TextStyle(fontSize: 20),),
+                    }, child: Text("Cancel", style: TextStyle(fontSize: 20, color: Colors.white),),
                     )
                 ),
               ],

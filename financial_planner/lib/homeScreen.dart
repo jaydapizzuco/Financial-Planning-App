@@ -150,12 +150,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       }),
                   SizedBox(
                       width: 200,
-                      child: ElevatedButton(onPressed: () {
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5), // <-- Radius
+                              ),
+                              backgroundColor: Colors.purple[100]
+                          ),
+                          onPressed: () {
                         FirebaseAuth.instance.signOut();
                         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                             builder: (context) => LoginScreen()), (
                             route) => false);
-                      }, child: Text("Logout", style: TextStyle(fontSize: 24),)
+                      }, child: Text("Logout", style: TextStyle(fontSize: 24,color: Colors.black87),)
                       )
                   ),
                 ]

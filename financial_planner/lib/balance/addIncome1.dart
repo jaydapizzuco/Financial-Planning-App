@@ -151,10 +151,18 @@ class _AddIncome1State extends State<AddIncome1> {
                       items: dropdownItems,
                     );
                   }),
+              SizedBox(height: 10,),
               SizedBox(
                   height: 50,
                   width: 300,
-                  child: ElevatedButton(onPressed: () {
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5), // <-- Radius
+                        ),
+                        backgroundColor: Colors.green[300]
+                    ),
+                    onPressed: () {
                     DateTime now = DateTime.now();
                     DateTime currentDate = DateTime(now.year , now.month, now.day);
                     _addIncome(new Income(
@@ -174,19 +182,26 @@ class _AddIncome1State extends State<AddIncome1> {
                         builder: (context) =>
                             NavigatingScreen(userId: widget.userId, page: 1,)), (
                         route) => false);
-                  }, child: Text("Add Income", style: TextStyle(fontSize: 20),),
+                  }, child: Text("Add Income", style: TextStyle(fontSize: 20, color: Colors.white),),
                   )
               ),
               SizedBox(height: 20,),
               SizedBox(
                   height: 50,
                   width: 300,
-                  child: ElevatedButton(onPressed: () {
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5), // <-- Radius
+                        ),
+                        backgroundColor: Colors.red[300]
+                    ),
+                    onPressed: () {
                     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                         builder: (context) =>
                             NavigatingScreen(userId: widget.userId, page: 1,)), (
                         route) => false);
-                  }, child: Text("Cancel", style: TextStyle(fontSize: 20),),
+                  }, child: Text("Cancel", style: TextStyle(fontSize: 20, color: Colors.white),),
                   )
               ),
             ],

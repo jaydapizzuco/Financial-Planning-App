@@ -74,6 +74,12 @@ class _FailedGoalsState extends State<FailedGoals> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5), // <-- Radius
+                              ),
+                              backgroundColor: Colors.amber
+                          ),
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
                                 context,
@@ -84,7 +90,7 @@ class _FailedGoalsState extends State<FailedGoals> {
                                           page: 4,)),
                                     (route) => false);
 
-                          }, child: Text('Goals In Progress')),
+                          }, child: Text('Goals In Progress', style: TextStyle(color: Colors.white),)),
                     ],
                   ),
                   SizedBox(height: 20,),

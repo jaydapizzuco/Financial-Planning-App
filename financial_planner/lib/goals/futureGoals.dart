@@ -73,6 +73,12 @@ class _FutureGoalsState extends State<FutureGoals> {
                     children: [
                       SizedBox(height: 30,),
                       ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5), // <-- Radius
+                              ),
+                              backgroundColor: Colors.amber
+                          ),
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
                                 context,
@@ -83,9 +89,10 @@ class _FutureGoalsState extends State<FutureGoals> {
                                           page: 4,)),
                                     (route) => false);
 
-                          }, child: Text('Goals In Progress')),
+                          }, child: Text('Goals In Progress', style: TextStyle(color: Colors.white),)),
                     ],
                   ),
+                  SizedBox(height: 20,),
                   StreamBuilder<QuerySnapshot>(
                       stream: _goalsStream,
                       builder: (BuildContext context,
