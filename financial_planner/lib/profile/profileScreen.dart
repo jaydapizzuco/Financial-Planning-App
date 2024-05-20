@@ -260,25 +260,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return email;
   }
 
-  bool comparePassword(String p1, String p2){
-
-    // try {
-    //   QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-    //       .collection('Users')
-    //       .where('id', isEqualTo: id)
-    //       .get();
-    //
-    //   if (querySnapshot.docs.isNotEmpty) {
-    //     var userModel = UserModel.fromSnapshot(querySnapshot.docs.first);
-    //     username = userModel.username;
-    //   }
-    // } catch (error) {
-    //   print('Error getting ID: $error');
-    // }
-
-    return true;
-  }
-
   Future<Stream<QuerySnapshot>> getBalanceById(String? id) async {
     Stream<QuerySnapshot> balance = await FirebaseFirestore.instance
         .collection('Balances')
@@ -290,19 +271,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<int?> getGoalsCompleted(String? id) async {
 
-    int amount = 0;
-
-    StreamSubscription<QuerySnapshot> subscription = FirebaseFirestore.instance
+     Future<int?> number;
+    Stream<QuerySnapshot> goals = await FirebaseFirestore.instance
         .collection('Goals')
-        .where('userId', isEqualTo: widget.userId)
+        .where('userId', isEqualTo: id)
         .where('status', isEqualTo: 1)
-        .snapshots()
-        .listen((QuerySnapshot snapshot) {
-      amount = snapshot.docs.length;
-      // Do something with the length here, like updating UI or further processing.
-    });
+        .snapshots();
+    number = goals.length;
 
-    return amount;
+    // StreamSubscription<QuerySnapshot> subscription = await FirebaseFirestore.instance
+    //     .collection('Goals')
+    //     .where('userId', isEqualTo: id)
+    //     .where('status', isEqualTo: 1)
+    //     .snapshots()
+    //     .listen((QuerySnapshot snapshot) {
+    //   length = snapshot.docs.length;
+    //
+    //   // Do something with the length here, like updating UI or further processing.
+    // });
+
+    return number;
   }
 
   Future<int?> getGoalsFailed(String? id) async {
