@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/Balance.dart';
 import '../models/UserModel.dart';
+import 'dart:async';
 
 class ProfileScreen extends StatefulWidget {
   final String? userId;
@@ -67,48 +70,145 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: Text('Profile'),
           backgroundColor: Colors.purple[100],
         ),
-        body: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
+        body: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(Icons.person, size: 130,),
-                  Column(
+                  Row(
                     children: [
-                      Row(
+                      Icon(Icons.person, size: 130,),
+                      Column(
                         children: [
-                          Text('$username', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
-                          ElevatedButton(
-                              onPressed: (){
+                          Row(
+                            children: [
+                              Text('$username', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                              ElevatedButton(
+                                  onPressed: (){
 
-                              },
-                              child: Icon(Icons.edit))
+                                  },
+                                  child: Icon(Icons.edit))
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('$email', style: TextStyle(fontSize: 15),),
+                              ElevatedButton(
+                                  onPressed: (){
+
+                                  },
+                                  child: Icon(Icons.edit))
+                            ],
+                          ),
                         ],
-                      ),
-
-                      Row(
-                        children: [
-                          Text('$email', style: TextStyle(fontSize: 15),),
-                          ElevatedButton(
-                              onPressed: (){
-
-                              },
-                              child: Icon(Icons.edit))
-                        ],
-                      ),
+                      )
                     ],
-                  )
+                  ),
+
+                  ElevatedButton(
+                      onPressed: (){
+
+                      },
+                      child: Text('Change password')),
+                  SizedBox(height: 20,),
+
+                  StreamBuilder<QuerySnapshot>(
+                      stream: _balance,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot){
+                        if(snapshot.data != null && snapshot.data!.docs.isEmpty){
+                          return Text(
+                            "Looks like you don't have any completed goals right now",
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return Text('something went wrong');
+                        }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Text('Loading');
+                        }
+                        return
+                          ListView(
+                            shrinkWrap: true,
+                            children:
+                            snapshot.data!.docs.map((DocumentSnapshot document) {
+                              Map<String, dynamic> data =
+                              document.data()! as Map<String, dynamic>;
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 50,
+                                    width: 350,
+                                    decoration: BoxDecoration(
+                                        color: Colors.blue[100],
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                    child: Center(child: Text('Account balance: \$${data['amount']}',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 22),),),
+                                  ),
+                                  SizedBox(height: 20,),
+                                  Container(
+                                    height: 40,
+                                    width: 290,
+                                    decoration: BoxDecoration(
+                                        color: Colors.green[100],
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                    child: Center(child: Text('Gained this month: \$${data['gainedThisMonth']}',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 18),),),
+                                  ),
+                                  SizedBox(height: 10,),
+                                  Container(
+                                    height: 40,
+                                    width: 290,
+                                    decoration: BoxDecoration(
+                                        color: Colors.red[100],
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                    child: Center(child: Text('Spent this month: \$${data['spentThisMonth']}',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 18),),),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                      }),
+                  SizedBox(height: 50,),
+                  Container(
+                    height: 40,
+                    width: 290,
+                    decoration: BoxDecoration(
+                        color: Colors.green[100],
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(20))),
+                    child: Center(child: Text('Completed goals: $completedGoals',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),),),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    height: 40,
+                    width: 290,
+                    decoration: BoxDecoration(
+                        color: Colors.red[100],
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(20))),
+                    child: Center(child: Text('Failed goals: $failedGoals',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),),),
+                  ),
                 ],
               ),
-
-              ElevatedButton(
-                  onPressed: (){
-
-                  },
-                  child: Text('Change password'))
-            ],
-          ),
+            )
         ),
       );
     }else{
@@ -180,24 +280,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<Stream<QuerySnapshot>> getBalanceById(String? id) async {
-    Stream<QuerySnapshot> bal = await FirebaseFirestore.instance
-        .collection('Balance')
+    Stream<QuerySnapshot> balance = await FirebaseFirestore.instance
+        .collection('Balances')
         .where('userId', isEqualTo: widget.userId)
         .snapshots();
 
-    return bal;
+    return balance;
   }
 
   Future<int?> getGoalsCompleted(String? id) async {
 
-    Future<int?> number;
-    Stream<QuerySnapshot> goals = await FirebaseFirestore.instance
+    int amount = 0;
+
+    StreamSubscription<QuerySnapshot> subscription = FirebaseFirestore.instance
         .collection('Goals')
-        .where('userId', isEqualTo: id)
+        .where('userId', isEqualTo: widget.userId)
         .where('status', isEqualTo: 1)
-        .snapshots();
-    number = goals.length;
-    return number;
+        .snapshots()
+        .listen((QuerySnapshot snapshot) {
+      amount = snapshot.docs.length;
+      // Do something with the length here, like updating UI or further processing.
+    });
+
+    return amount;
   }
 
   Future<int?> getGoalsFailed(String? id) async {
@@ -222,5 +327,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
         .where('userId', isEqualTo: widget.userId)
         .snapshots();
     return bud;
+  }
+
+  Future<num?> getBalanceAmountById(String? id) async {
+    num? balanceAmount;
+
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Balances')
+          .where('userId', isEqualTo: widget.userId)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        Balance balance = Balance.fromSnapshot(querySnapshot.docs.first);
+        balanceAmount = balance.amount;
+      }
+    } catch (error) {
+      print('Error getting ID: $error');
+    }
+
+    return balanceAmount;
   }
 }

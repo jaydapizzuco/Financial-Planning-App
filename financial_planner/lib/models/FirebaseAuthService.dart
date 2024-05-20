@@ -34,4 +34,14 @@ class FirebaseAuthService {
       print("An error occured : ${e}");
     }
   }
+
+  // Future<void> modifyEmail(String email) async{
+  //   try{
+  //     User? u = await _auth.currentUser;
+  //     _auth.u.up
+  //   }
+  //   catch(e){
+  //     print("An error occured : ${e}");
+  //   }
+  // }
 }
