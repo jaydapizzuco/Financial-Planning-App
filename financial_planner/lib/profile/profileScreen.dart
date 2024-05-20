@@ -1,3 +1,4 @@
+import 'package:financial_planner/profile/updatePSW.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -57,8 +58,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     int? fail = await getGoalsFailed(widget.userId);
 
     setState(() {
-      completedGoals = comp;
-      failedGoals = fail;
+      if (comp == null){
+        completedGoals = 0;
+      }else{
+        completedGoals = comp;
+      }
+      if (fail == null){
+        failedGoals = 0;
+      }else{
+        failedGoals = fail;
+      }
     });
   }
 
@@ -108,7 +117,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                   ElevatedButton(
                       onPressed: (){
-
+                        FirebaseAuth.instance.signOut();
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => updatePSW(userId: widget.userId)),
+                                (route) => false);
                       },
                       child: Text('Change password')),
                   SizedBox(height: 20,),
