@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:financial_planner/profile/profileScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'login/loginScreen.dart';
@@ -96,6 +97,22 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     } else {
       return Scaffold(
+        appBar: AppBar(
+          title: Text('Home'),
+          backgroundColor: Colors.purple[100],
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.person),
+              tooltip: 'Profile',
+              iconSize: 35,
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) =>
+                        ProfileScreen(userId: widget.userId)));
+              },
+            ),
+          ],
+        ),
         body: Center(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
