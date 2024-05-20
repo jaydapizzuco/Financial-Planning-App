@@ -80,6 +80,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
       return Scaffold(
         appBar: AppBar(
           title: Text("Account Balance"),
+          backgroundColor: Colors.purple[100],
         ),
         body: Center(
           //child: SingleChildScrollView(
@@ -87,6 +88,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(height: 30,),
                   StreamBuilder<QuerySnapshot>(
                       stream: _balance,
                       builder: (BuildContext context,
@@ -231,20 +233,13 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                                     data['description'])),
                                           ),
                                           onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        IncomeInfo(
-                                                            incomeId: data['id'], userId: widget.userId,)));
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                content:
-                                                Text(
-                                                    'A SnackBar has been shown.'),
-                                              ),
-                                            );
+                                            // Navigator.push(
+                                            //     context,
+                                            //     MaterialPageRoute(
+                                            //         builder: (context) =>
+                                            //             IncomeInfo(
+                                            //                 incomeId: data['id'], userId: widget.userId,)));
+                                            //
                                           },
                                         ),
                                         SizedBox(
@@ -257,6 +252,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                       }),
                 ])),
         floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Colors.purple[100],
           onPressed: () {
             Navigator.pushAndRemoveUntil(
                 context,

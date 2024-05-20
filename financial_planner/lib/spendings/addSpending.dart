@@ -60,6 +60,7 @@ class _AddSpendingState extends State<AddSpending> {
     return Scaffold(
       appBar: AppBar(
         title: Text("New Spending"),
+        backgroundColor: Colors.purple[100],
       ),
       body:  SingleChildScrollView(
     child: Center(
@@ -67,6 +68,7 @@ class _AddSpendingState extends State<AddSpending> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: 30,),
             Container(
               width: 350,
               decoration: BoxDecoration(

@@ -161,7 +161,7 @@ class _BudgetInfoState extends State<BudgetInfo> {
                     PieChart(
                       dataMap:dataMap,
                       colorList: colors,
-                      chartRadius:330,
+                      chartRadius:280,
                       centerText: data['name'],
                       chartType: ChartType.ring,
                       ringStrokeWidth: 50,

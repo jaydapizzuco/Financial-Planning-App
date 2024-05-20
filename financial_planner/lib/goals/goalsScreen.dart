@@ -31,10 +31,10 @@ class _GoalScreenState extends State<GoalScreen> {
   int? dateNow;
 
   List <Color> colors = [
-    Color(0xFFF06292),
+    Color(0xFFFF9AAD),
     Color(0xFFFFCC80),
     Color(0xFFD0FFC9),
-    Color(0xFFB76FFF)
+    Color(0xFFD5ADFF)
   ];
   int colorIndex = 0;
 
@@ -74,6 +74,7 @@ class _GoalScreenState extends State<GoalScreen> {
       return Scaffold(
         appBar: AppBar(
           title: Text('Goals In Progress'),
+          backgroundColor: Colors.purple[100],
         ),
         body: Center(
             child: Column(
@@ -83,8 +84,14 @@ class _GoalScreenState extends State<GoalScreen> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      //button to see future goals
+                      SizedBox(height: 20,),
                       ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5), // <-- Radius
+                              ),
+                              backgroundColor: Colors.amber
+                          ),
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
                                 context,
@@ -94,10 +101,15 @@ class _GoalScreenState extends State<GoalScreen> {
                                           userId: widget.userId,
                                         )),
                                     (route) => false);
-                          }, child: Text('Future goals')),
-                      SizedBox(height: 10,),
+                          }, child: Text('Future goals',style: TextStyle(color: Colors.white),)),
                       //button to see completed goals
                       ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5), // <-- Radius
+                              ),
+                              backgroundColor: Colors.green
+                          ),
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
                                 context,
@@ -107,10 +119,15 @@ class _GoalScreenState extends State<GoalScreen> {
                                           userId: widget.userId,
                                         )),
                                     (route) => false);
-                          }, child: Text('Completed goals')),
-                      SizedBox(height: 10,),
+                          }, child: Text('Completed goals',style: TextStyle(color: Colors.white),)),
                       //button to see failed goals
                       ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5), // <-- Radius
+                              ),
+                              backgroundColor: Colors.redAccent
+                          ),
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
                                 context,
@@ -120,10 +137,10 @@ class _GoalScreenState extends State<GoalScreen> {
                                           userId: widget.userId,
                                         )),
                                     (route) => false);
-                          }, child: Text('Failed goals')),
-                      SizedBox(height: 10,),
+                          }, child: Text('Failed goals',style: TextStyle(color: Colors.white),)),
                     ],
                   ),
+                SizedBox(height: 30,),
                 StreamBuilder<QuerySnapshot>(
                     stream: _goalsStream,
                     builder: (BuildContext context,
@@ -228,6 +245,7 @@ class _GoalScreenState extends State<GoalScreen> {
             )
         ),
         floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Colors.purple[100],
           onPressed: () {
             Navigator.pushAndRemoveUntil(
                 context,

@@ -42,6 +42,7 @@ class _AddBudgetState extends State<AddBudget> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Create a New Budget"),
+        backgroundColor: Colors.purple[100],
       ),
       body: Expanded(
        // child: Center(

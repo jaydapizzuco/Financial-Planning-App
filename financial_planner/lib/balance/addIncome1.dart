@@ -58,6 +58,7 @@ class _AddIncome1State extends State<AddIncome1> {
     return Scaffold(
       appBar: AppBar(
         title: Text("New Income"),
+        backgroundColor: Colors.purple[100],
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -65,6 +66,7 @@ class _AddIncome1State extends State<AddIncome1> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(height: 30,),
               Container(
                 width: 350,
                 decoration: BoxDecoration(

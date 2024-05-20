@@ -35,6 +35,7 @@ class _ForgetPSW1State extends State<ForgetPSW1> {
     return Scaffold(
         appBar: AppBar(
         title: Text("Reset Password"),
+          backgroundColor: Colors.purple[100],
     ),
     body: Center(
     child: Column(

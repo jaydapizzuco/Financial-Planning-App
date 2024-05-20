@@ -66,6 +66,7 @@ class _AddGoalState extends State<AddGoal> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Create a New Goal"),
+        backgroundColor: Colors.purple[100],
       ),
       body: SingleChildScrollView(
         // child: Center(

@@ -52,6 +52,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
       return Scaffold(
         appBar: AppBar(
           title: Text("Budgets"),
+          backgroundColor: Colors.purple[100],
         ),
         body: Center(
           //child: SingleChildScrollView(
@@ -59,6 +60,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(height: 30),
                   StreamBuilder<QuerySnapshot>(
                       stream: _budgetStream,
                       builder: (BuildContext context,
@@ -155,6 +157,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
             )
         ),
         floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Colors.purple[100],
           onPressed: () {
             Navigator.pushAndRemoveUntil(
                 context,

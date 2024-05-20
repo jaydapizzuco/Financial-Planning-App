@@ -54,6 +54,7 @@ class _GoalInfoState extends State<GoalInfo> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Goal'),
+        backgroundColor: Colors.purple[100],
       ),
         body: SingleChildScrollView(
           child: Center(
@@ -62,6 +63,7 @@ class _GoalInfoState extends State<GoalInfo> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    SizedBox(height: 30,),
                     StreamBuilder<QuerySnapshot>(
                         stream: _goal,
                         builder: (BuildContext context,

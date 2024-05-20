@@ -87,6 +87,7 @@ class _SpendingScreenState extends State<SpendingScreen> {
       return Scaffold(
         appBar: AppBar(
           title: Text("Account Balance"),
+          backgroundColor: Colors.purple[100],
         ),
         body: Center(
           //child: SingleChildScrollView(
@@ -94,6 +95,7 @@ class _SpendingScreenState extends State<SpendingScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(height: 30,),
               StreamBuilder<QuerySnapshot>(
                   stream: _balance,
                   builder: (BuildContext context,
@@ -241,6 +243,7 @@ class _SpendingScreenState extends State<SpendingScreen> {
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Colors.purple[100],
           onPressed: () {
             Navigator.pushAndRemoveUntil(
                 context,

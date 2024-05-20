@@ -62,12 +62,14 @@ class _CompletedGoalsState extends State<CompletedGoals> {
       return Scaffold(
         appBar: AppBar(
           title: Text('Future Goals'),
+          backgroundColor: Colors.purple[100],
         ),
         body: Center(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(height: 30,),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

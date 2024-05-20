@@ -60,15 +60,18 @@ class _FutureGoalsState extends State<FutureGoals> {
       return Scaffold(
         appBar: AppBar(
           title: Text('Future Goals'),
+          backgroundColor: Colors.purple[100],
         ),
         body: Center(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      SizedBox(height: 30,),
                       ElevatedButton(
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
