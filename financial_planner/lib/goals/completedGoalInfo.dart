@@ -51,7 +51,7 @@ class _CompletedGoalInfoState extends State<CompletedGoalInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Goal'),
+          title: Text('Completed Goal'),
         ),
         body: SingleChildScrollView(
           child: Center(

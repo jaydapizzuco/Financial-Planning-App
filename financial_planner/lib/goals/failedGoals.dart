@@ -11,17 +11,17 @@ import 'futureGoalInfo.dart';
 import 'goalInfo.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CompletedGoals extends StatefulWidget {
+class FailedGoals extends StatefulWidget {
   final String? userId;
 
-  CompletedGoals({this.userId});
+  FailedGoals({this.userId});
 
 
   @override
-  State<CompletedGoals> createState() => _CompletedGoalsState();
+  State<FailedGoals> createState() => _FailedGoalsState();
 }
 
-class _CompletedGoalsState extends State<CompletedGoals> {
+class _FailedGoalsState extends State<FailedGoals> {
 
   Stream<QuerySnapshot>? _goalsStream;
 
@@ -35,7 +35,7 @@ class _CompletedGoalsState extends State<CompletedGoals> {
   }
 
   void getGoals() async {
-    Stream<QuerySnapshot>? _goals = await _getCompletedGoals(widget.userId);
+    Stream<QuerySnapshot>? _goals = await _getFailedGoals(widget.userId);
 
 
     setState(() {
@@ -82,7 +82,7 @@ class _CompletedGoalsState extends State<CompletedGoals> {
                                           page: 4,)),
                                     (route) => false);
 
-                          }, child: Text('Completed Goals')),
+                          }, child: Text('Goals In Progress')),
                     ],
                   ),
                   SizedBox(height: 20,),
@@ -92,7 +92,7 @@ class _CompletedGoalsState extends State<CompletedGoals> {
                           AsyncSnapshot<QuerySnapshot> snapshot){
                         if(snapshot.data != null && snapshot.data!.docs.isEmpty){
                           return Text(
-                            "Looks like you don't have any completed goals right now",
+                            "Looks like you don't have any failed goals right now",
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                           );
                         }
@@ -120,7 +120,7 @@ class _CompletedGoalsState extends State<CompletedGoals> {
                                             height: 140,
                                             width: 350,
                                             decoration: BoxDecoration(
-                                                color: Colors.green[200],
+                                                color: Colors.redAccent[300],
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(30))),
                                             child: ListTile(
@@ -132,18 +132,6 @@ class _CompletedGoalsState extends State<CompletedGoals> {
                                                     fontSize: 28,
                                                   ),
                                                 ),
-                                                subtitle: GFProgressBar(
-                                                  percentage: 1,
-                                                  backgroundColor : Colors.black,
-                                                  progressBarColor: Colors.green,
-                                                  lineHeight: 25,
-                                                  child: Padding(
-                                                    padding: EdgeInsets.only(right: 5),
-                                                    child: Text('100%', textAlign: TextAlign.end,
-                                                      style: TextStyle(fontSize: 17, color: Colors.white),
-                                                    ),
-                                                  ),
-                                                )
                                             ),),
                                           onTap: () {
                                             Navigator.pushAndRemoveUntil(
@@ -180,12 +168,15 @@ class _CompletedGoalsState extends State<CompletedGoals> {
     return goals;
   }
 
-  Future <Stream<QuerySnapshot>> _getCompletedGoals(String? id) async {
+  Future <Stream<QuerySnapshot>> _getFailedGoals(String? id) async {
+
+    DateTime date = DateTime.now();
 
     Stream<QuerySnapshot> goals = await FirebaseFirestore.instance
         .collection('Goals')
         .where('userId', isEqualTo: id)
-        .where('status', isEqualTo: 1)
+        .where('status', isEqualTo: 0)
+        .where('endDate', isLessThan: date)
         .snapshots();
 
     return goals;

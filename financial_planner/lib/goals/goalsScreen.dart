@@ -1,4 +1,5 @@
 import 'package:financial_planner/goals/completedGoals.dart';
+import 'package:financial_planner/goals/failedGoals.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/progress_bar/gf_progress_bar.dart';
 import 'package:getwidget/getwidget.dart';
@@ -111,7 +112,14 @@ class _GoalScreenState extends State<GoalScreen> {
                       //button to see failed goals
                       ElevatedButton(
                           onPressed: () {
-
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        FailedGoals(
+                                          userId: widget.userId,
+                                        )),
+                                    (route) => false);
                           }, child: Text('Failed goals')),
                       SizedBox(height: 10,),
                     ],
@@ -257,6 +265,7 @@ class _GoalScreenState extends State<GoalScreen> {
         .where('userId', isEqualTo: id)
         .where('status', isEqualTo: 0)
         .where('startDate', isLessThanOrEqualTo: date)
+        .where('endDate', isGreaterThanOrEqualTo: date)
         .snapshots();
 
     return goalsUser;
