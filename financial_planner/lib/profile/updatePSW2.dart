@@ -2,14 +2,14 @@ import 'package:financial_planner/login/loginScreen.dart';
 import 'package:flutter/material.dart';
 
 
-class ForgetPSW2 extends StatefulWidget {
-  const ForgetPSW2({super.key});
+class UpdatePSW2 extends StatefulWidget {
+  const UpdatePSW2({super.key});
 
   @override
-  State<ForgetPSW2> createState() => _ForgetPSW2State();
+  State<UpdatePSW2> createState() => _UpdatePSW2State();
 }
 
-class _ForgetPSW2State extends State<ForgetPSW2> {
+class _UpdatePSW2State extends State<UpdatePSW2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

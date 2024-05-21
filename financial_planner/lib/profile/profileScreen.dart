@@ -280,15 +280,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         .snapshots();
     number = goals.length;
 
-    // StreamSubscription<QuerySnapshot> subscription = await FirebaseFirestore.instance
+    // StreamSubscription<QuerySnapshot> goals = await FirebaseFirestore.instance
     //     .collection('Goals')
     //     .where('userId', isEqualTo: id)
     //     .where('status', isEqualTo: 1)
     //     .snapshots()
     //     .listen((QuerySnapshot snapshot) {
-    //   length = snapshot.docs.length;
+    //   number = snapshot.docs.length;
     //
-    //   // Do something with the length here, like updating UI or further processing.
+    //
     // });
 
     return number;

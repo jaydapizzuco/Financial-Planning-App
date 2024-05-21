@@ -24,7 +24,7 @@ class _UpdatePSW1State extends State<updatePSW> {
       if (_email.text != null) {
         _auth.sendPasswordResetEmail(_email.text);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("An email has been sent to reset your password")));
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ForgetPSW2()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => UpdatePSW2()));
       }
     }
     catch (e){
