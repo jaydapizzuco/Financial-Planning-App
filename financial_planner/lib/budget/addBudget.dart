@@ -95,7 +95,7 @@ class _AddBudgetState extends State<AddBudget> {
                 textInputAction: TextInputAction.next,
                 maxLines: null,
                 decoration: InputDecoration(labelText: 'Description',
-                  contentPadding: EdgeInsets.symmetric(vertical: 30.0),),
+                  contentPadding: EdgeInsets.symmetric(vertical: 10.0),),
               ),
             ),
             SizedBox(height: 30,),

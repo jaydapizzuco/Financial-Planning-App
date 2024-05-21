@@ -92,10 +92,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(
                     width: 350,
                     child : ElevatedButton(onPressed: (){
+                      UserModel u =
                         _addUserToDb(new UserModel(
                           username: _usernameController.text,
                           email : _emailController.text,
                         ));
+                      print("${u.email}  ${u.username}");
                         _register();
                     }, child: Text("Register", style: TextStyle(fontSize: 20),),
                     )
@@ -119,7 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 }
 
-void _addUserToDb(UserModel userModel){
+UserModel _addUserToDb(UserModel userModel){
   final userCollection = FirebaseFirestore.instance.collection("Users");
 
   String id = userCollection.doc().id;
@@ -128,9 +130,11 @@ void _addUserToDb(UserModel userModel){
     username: userModel.username,
     email: userModel.email,
     id: id,
-  ).toJson();
+  );
 
-  userCollection.doc(id).set(newUser);
+  final newUserJson = newUser.toJson();
+
+  userCollection.doc(id).set(newUserJson);
 
   final balanceCollection = FirebaseFirestore.instance.collection("Balances");
 
@@ -145,4 +149,6 @@ void _addUserToDb(UserModel userModel){
   ).toJson();
 
   balanceCollection.doc(balanceId).set(newBalance);
+
+  return newUser;
 }
